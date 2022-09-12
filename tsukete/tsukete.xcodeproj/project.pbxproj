@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F50D78ED9C9C804B09867B4 /* libPods-tsukete-tsuketeUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3A5243790C7D6E2A821202 /* libPods-tsukete-tsuketeUITests.a */; };
+		50A540320E44A18A54CE9E4C /* libPods-tsukete.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3097EFD3F7A0E4E24E176768 /* libPods-tsukete.a */; };
 		94A0AC9328CED05E003F0F95 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A0AC9228CED05E003F0F95 /* AppDelegate.swift */; };
 		94A0AC9528CED05E003F0F95 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A0AC9428CED05E003F0F95 /* SceneDelegate.swift */; };
 		94A0AC9728CED05E003F0F95 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A0AC9628CED05E003F0F95 /* ViewController.swift */; };
@@ -17,6 +19,14 @@
 		94A0ACAD28CED061003F0F95 /* tsuketeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A0ACAC28CED061003F0F95 /* tsuketeTests.swift */; };
 		94A0ACB728CED061003F0F95 /* tsuketeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A0ACB628CED061003F0F95 /* tsuketeUITests.swift */; };
 		94A0ACB928CED061003F0F95 /* tsuketeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A0ACB828CED061003F0F95 /* tsuketeUITestsLaunchTests.swift */; };
+		94A0ACCA28CED3C8003F0F95 /* tsuketeLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 94A0ACC928CED3C8003F0F95 /* tsuketeLogo.png */; };
+		94A0ACCC28CED59F003F0F95 /* explain1.png in Resources */ = {isa = PBXBuildFile; fileRef = 94A0ACCB28CED59F003F0F95 /* explain1.png */; };
+		94A0ACD428CED98D003F0F95 /* OnboardingPageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A0ACD228CED98D003F0F95 /* OnboardingPageVC.swift */; };
+		94A0ACD828CEF31C003F0F95 /* OnboardingItemVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A0ACD628CEF31C003F0F95 /* OnboardingItemVC.swift */; };
+		94A0ACD928CEF31C003F0F95 /* OnboardingItemVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94A0ACD728CEF31C003F0F95 /* OnboardingItemVC.xib */; };
+		94F1410628CF12EE0012B930 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F1410428CF12EE0012B930 /* MapViewController.swift */; };
+		94F1410728CF12EE0012B930 /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94F1410528CF12EE0012B930 /* MapViewController.xib */; };
+		FD847256D788CE520B29AFE9 /* libPods-tsuketeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 241DBEB702A2DBBD20C4910E /* libPods-tsuketeTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +47,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		241DBEB702A2DBBD20C4910E /* libPods-tsuketeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tsuketeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3097EFD3F7A0E4E24E176768 /* libPods-tsukete.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tsukete.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		32F31AA9E8200D68F4A536B4 /* Pods-tsuketeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tsuketeTests.release.xcconfig"; path = "Target Support Files/Pods-tsuketeTests/Pods-tsuketeTests.release.xcconfig"; sourceTree = "<group>"; };
+		5264F859F1A2C81D90C2C7F6 /* Pods-tsukete.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tsukete.debug.xcconfig"; path = "Target Support Files/Pods-tsukete/Pods-tsukete.debug.xcconfig"; sourceTree = "<group>"; };
+		6B3A5243790C7D6E2A821202 /* libPods-tsukete-tsuketeUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tsukete-tsuketeUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		79D30214373D5BF68D8DC036 /* Pods-tsukete-tsuketeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tsukete-tsuketeUITests.debug.xcconfig"; path = "Target Support Files/Pods-tsukete-tsuketeUITests/Pods-tsukete-tsuketeUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		94A0AC8F28CED05E003F0F95 /* tsukete.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tsukete.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		94A0AC9228CED05E003F0F95 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		94A0AC9428CED05E003F0F95 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -51,6 +67,16 @@
 		94A0ACB228CED061003F0F95 /* tsuketeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = tsuketeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		94A0ACB628CED061003F0F95 /* tsuketeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tsuketeUITests.swift; sourceTree = "<group>"; };
 		94A0ACB828CED061003F0F95 /* tsuketeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tsuketeUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		94A0ACC928CED3C8003F0F95 /* tsuketeLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tsuketeLogo.png; sourceTree = "<group>"; };
+		94A0ACCB28CED59F003F0F95 /* explain1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explain1.png; sourceTree = "<group>"; };
+		94A0ACD228CED98D003F0F95 /* OnboardingPageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageVC.swift; sourceTree = "<group>"; };
+		94A0ACD628CEF31C003F0F95 /* OnboardingItemVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemVC.swift; sourceTree = "<group>"; };
+		94A0ACD728CEF31C003F0F95 /* OnboardingItemVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OnboardingItemVC.xib; sourceTree = "<group>"; };
+		94F1410428CF12EE0012B930 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		94F1410528CF12EE0012B930 /* MapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MapViewController.xib; sourceTree = "<group>"; };
+		9ACAFC9115E9FCA9D79F2977 /* Pods-tsukete-tsuketeUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tsukete-tsuketeUITests.release.xcconfig"; path = "Target Support Files/Pods-tsukete-tsuketeUITests/Pods-tsukete-tsuketeUITests.release.xcconfig"; sourceTree = "<group>"; };
+		EEB8A502276E7E8A74897EA6 /* Pods-tsukete.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tsukete.release.xcconfig"; path = "Target Support Files/Pods-tsukete/Pods-tsukete.release.xcconfig"; sourceTree = "<group>"; };
+		FFE02689D00FB57ABC761D56 /* Pods-tsuketeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tsuketeTests.debug.xcconfig"; path = "Target Support Files/Pods-tsuketeTests/Pods-tsuketeTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50A540320E44A18A54CE9E4C /* libPods-tsukete.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD847256D788CE520B29AFE9 /* libPods-tsuketeTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,12 +100,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F50D78ED9C9C804B09867B4 /* libPods-tsukete-tsuketeUITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3E241AFBBDDFF70AFC4A4CF2 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5264F859F1A2C81D90C2C7F6 /* Pods-tsukete.debug.xcconfig */,
+				EEB8A502276E7E8A74897EA6 /* Pods-tsukete.release.xcconfig */,
+				79D30214373D5BF68D8DC036 /* Pods-tsukete-tsuketeUITests.debug.xcconfig */,
+				9ACAFC9115E9FCA9D79F2977 /* Pods-tsukete-tsuketeUITests.release.xcconfig */,
+				FFE02689D00FB57ABC761D56 /* Pods-tsuketeTests.debug.xcconfig */,
+				32F31AA9E8200D68F4A536B4 /* Pods-tsuketeTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		94A0AC8628CED05E003F0F95 = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +127,8 @@
 				94A0ACAB28CED061003F0F95 /* tsuketeTests */,
 				94A0ACB528CED061003F0F95 /* tsuketeUITests */,
 				94A0AC9028CED05E003F0F95 /* Products */,
+				3E241AFBBDDFF70AFC4A4CF2 /* Pods */,
+				F9C4C54D2667930BA143E4DF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -101,9 +145,13 @@
 		94A0AC9128CED05E003F0F95 /* tsukete */ = {
 			isa = PBXGroup;
 			children = (
+				94A0ACD128CED6F9003F0F95 /* Storyboard */,
 				94A0AC9228CED05E003F0F95 /* AppDelegate.swift */,
 				94A0AC9428CED05E003F0F95 /* SceneDelegate.swift */,
-				94A0AC9628CED05E003F0F95 /* ViewController.swift */,
+				94A0ACC828CED389003F0F95 /* Resources */,
+				94A0ACC728CED383003F0F95 /* Controller */,
+				94A0ACC628CED37D003F0F95 /* Model */,
+				94A0ACC528CED378003F0F95 /* View */,
 				94A0AC9828CED05E003F0F95 /* Main.storyboard */,
 				94A0AC9E28CED061003F0F95 /* Assets.xcassets */,
 				94A0ACA028CED061003F0F95 /* LaunchScreen.storyboard */,
@@ -130,6 +178,59 @@
 			path = tsuketeUITests;
 			sourceTree = "<group>";
 		};
+		94A0ACC528CED378003F0F95 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				94A0AC9628CED05E003F0F95 /* ViewController.swift */,
+				94A0ACD228CED98D003F0F95 /* OnboardingPageVC.swift */,
+				94A0ACD628CEF31C003F0F95 /* OnboardingItemVC.swift */,
+				94F1410428CF12EE0012B930 /* MapViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		94A0ACC628CED37D003F0F95 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		94A0ACC728CED383003F0F95 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		94A0ACC828CED389003F0F95 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				94A0ACC928CED3C8003F0F95 /* tsuketeLogo.png */,
+				94A0ACCB28CED59F003F0F95 /* explain1.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		94A0ACD128CED6F9003F0F95 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				94A0ACD728CEF31C003F0F95 /* OnboardingItemVC.xib */,
+				94F1410528CF12EE0012B930 /* MapViewController.xib */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		F9C4C54D2667930BA143E4DF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3097EFD3F7A0E4E24E176768 /* libPods-tsukete.a */,
+				6B3A5243790C7D6E2A821202 /* libPods-tsukete-tsuketeUITests.a */,
+				241DBEB702A2DBBD20C4910E /* libPods-tsuketeTests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -137,9 +238,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 94A0ACBC28CED061003F0F95 /* Build configuration list for PBXNativeTarget "tsukete" */;
 			buildPhases = (
+				996E6DB1C9F7072899D8FDE0 /* [CP] Check Pods Manifest.lock */,
 				94A0AC8B28CED05E003F0F95 /* Sources */,
 				94A0AC8C28CED05E003F0F95 /* Frameworks */,
 				94A0AC8D28CED05E003F0F95 /* Resources */,
+				88F147518A0087C74F61F960 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -154,6 +257,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 94A0ACBF28CED061003F0F95 /* Build configuration list for PBXNativeTarget "tsuketeTests" */;
 			buildPhases = (
+				A2ABEBA2381B41414E305E0D /* [CP] Check Pods Manifest.lock */,
 				94A0ACA428CED061003F0F95 /* Sources */,
 				94A0ACA528CED061003F0F95 /* Frameworks */,
 				94A0ACA628CED061003F0F95 /* Resources */,
@@ -172,9 +276,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 94A0ACC228CED061003F0F95 /* Build configuration list for PBXNativeTarget "tsuketeUITests" */;
 			buildPhases = (
+				84422565A94CB11F735719FD /* [CP] Check Pods Manifest.lock */,
 				94A0ACAE28CED061003F0F95 /* Sources */,
 				94A0ACAF28CED061003F0F95 /* Frameworks */,
 				94A0ACB028CED061003F0F95 /* Resources */,
+				BAD86D066D49531E5F057744 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -234,8 +340,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94A0ACCA28CED3C8003F0F95 /* tsuketeLogo.png in Resources */,
 				94A0ACA228CED061003F0F95 /* LaunchScreen.storyboard in Resources */,
+				94A0ACCC28CED59F003F0F95 /* explain1.png in Resources */,
 				94A0AC9F28CED061003F0F95 /* Assets.xcassets in Resources */,
+				94F1410728CF12EE0012B930 /* MapViewController.xib in Resources */,
+				94A0ACD928CEF31C003F0F95 /* OnboardingItemVC.xib in Resources */,
 				94A0AC9A28CED05E003F0F95 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -256,6 +366,109 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		84422565A94CB11F735719FD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-tsukete-tsuketeUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		88F147518A0087C74F61F960 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-tsukete/Pods-tsukete-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-tsukete/Pods-tsukete-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-tsukete/Pods-tsukete-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		996E6DB1C9F7072899D8FDE0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-tsukete-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A2ABEBA2381B41414E305E0D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-tsuketeTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BAD86D066D49531E5F057744 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-tsukete-tsuketeUITests/Pods-tsukete-tsuketeUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-tsukete-tsuketeUITests/Pods-tsukete-tsuketeUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-tsukete-tsuketeUITests/Pods-tsukete-tsuketeUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		94A0AC8B28CED05E003F0F95 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -264,7 +477,10 @@
 				94A0AC9728CED05E003F0F95 /* ViewController.swift in Sources */,
 				94A0AC9D28CED05E003F0F95 /* tsukete.xcdatamodeld in Sources */,
 				94A0AC9328CED05E003F0F95 /* AppDelegate.swift in Sources */,
+				94A0ACD428CED98D003F0F95 /* OnboardingPageVC.swift in Sources */,
+				94A0ACD828CEF31C003F0F95 /* OnboardingItemVC.swift in Sources */,
 				94A0AC9528CED05E003F0F95 /* SceneDelegate.swift in Sources */,
+				94F1410628CF12EE0012B930 /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,6 +572,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				"EXCLUDED_ARCHS[sdk=*]" = arm64;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -370,7 +587,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -416,6 +633,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				"EXCLUDED_ARCHS[sdk=*]" = arm64;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -424,9 +642,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -436,6 +655,7 @@
 		};
 		94A0ACBD28CED061003F0F95 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5264F859F1A2C81D90C2C7F6 /* Pods-tsukete.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -449,6 +669,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -464,6 +685,7 @@
 		};
 		94A0ACBE28CED061003F0F95 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EEB8A502276E7E8A74897EA6 /* Pods-tsukete.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -477,6 +699,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -492,6 +715,7 @@
 		};
 		94A0ACC028CED061003F0F95 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FFE02689D00FB57ABC761D56 /* Pods-tsuketeTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -512,6 +736,7 @@
 		};
 		94A0ACC128CED061003F0F95 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 32F31AA9E8200D68F4A536B4 /* Pods-tsuketeTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -532,6 +757,7 @@
 		};
 		94A0ACC328CED061003F0F95 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 79D30214373D5BF68D8DC036 /* Pods-tsukete-tsuketeUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -550,6 +776,7 @@
 		};
 		94A0ACC428CED061003F0F95 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9ACAFC9115E9FCA9D79F2977 /* Pods-tsukete-tsuketeUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
