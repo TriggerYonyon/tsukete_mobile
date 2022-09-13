@@ -1,0 +1,6 @@
+module Pods_tsukete_tsuketeUITests {
+  umbrella header "Pods-tsukete-tsuketeUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

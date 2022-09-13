@@ -1,0 +1,6 @@
+module Pods_tsukete {
+  umbrella header "Pods-tsukete-umbrella.h"
+
+  export *
+  module * { export * }
+}

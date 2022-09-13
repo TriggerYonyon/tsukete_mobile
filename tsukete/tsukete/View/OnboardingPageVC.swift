@@ -52,11 +52,11 @@ class OnboardingPageVC: UIPageViewController {
     
     func makeBottomButton() {
         let button = UIButton()
-        button.setTitle("確認", for: .normal)
+        button.setTitle("Start!", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemBlue
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = 15
         
         button.addTarget(self, action: #selector(dismissPageView), for: .touchUpInside)
         self.view.addSubview(button)
@@ -64,8 +64,8 @@ class OnboardingPageVC: UIPageViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
             
         button.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        button.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 20).isActive = true
-        button.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -20).isActive = true
+        button.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 120).isActive = true
+        button.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -120).isActive = true
         // buttonの高さの設定
         // 基準点を設定せず、ただの数値だけ与えたいなら equalToConstantでいい
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -123,7 +123,10 @@ class OnboardingPageVC: UIPageViewController {
     }
     
     @objc func dismissPageView() {
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true) {
+            // ここで、requestのmessageを表示させたい
+            print("OnboardingPage -> mainPage")
+        }
     }
 
 }
