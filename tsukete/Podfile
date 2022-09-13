@@ -1,0 +1,20 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+platform :ios, '13.0'
+
+target 'tsukete' do
+
+  # Pods for tsukete
+  pod 'GoogleMaps', '7.1.0'
+  pod 'GooglePlaces', '7.1.0'
+
+  target 'tsuketeTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'tsuketeUITests' do
+    # Pods for testing
+  end
+
+end
