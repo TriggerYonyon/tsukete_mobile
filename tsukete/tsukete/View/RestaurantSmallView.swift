@@ -7,14 +7,11 @@
 
 import UIKit
 
-protocol RestaurantSmallViewDelegate {
-    func requestButtonEvent()
-}
-
 // Stotyboard上で描かれるように設定した (すぐ確認できるように)
-@IBDesignable
+//@IBDesignable
 class RestaurantSmallView: UIView {
-    public var delegate: RestaurantSmallViewDelegate?
+    @IBOutlet var customView: UIView!
+    
     var hasRequested = false
     
     @IBOutlet weak var image1: UIImageView!
@@ -56,40 +53,22 @@ class RestaurantSmallView: UIView {
     }
     
     private func loadXib() {
-//        let bundle = Bundle(for: type(of: self))
-//        let nib = UINib(nibName: "RestaurantSmallView", bundle: bundle)
-//        let view = nib.instantiate(withOwner: self, options: nil)[0] as! UIView
-//
-//
-//        view.frame = bounds
-//        view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-//        view.layer.cornerRadius = view.bounds.height / 2
-//        view.clipsToBounds = true
-//        view.backgroundColor = .systemBlue
-//        self.addSubview(view)
         let identifier = String(describing: type(of: self))
-        let nibs = Bundle.main.loadNibNamed(identifier, owner: self, options: nil)
-
-        guard let customView = nibs?.first as? UIView else {
-            fatalError("Error when load custom View")
-        }
+        Bundle.main.loadNibNamed(identifier, owner: self, options: nil)
         
         customView.frame = self.bounds
         customView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        customView.backgroundColor = .white
         
-        customView.layer.cornerRadius = 15
-        customView.backgroundColor = .green
-        customView.layer.borderColor = UIColor.lightGray.cgColor
-        customView.layer.borderWidth = 3
-        customView.layer.cornerRadius = 15
-        customView.clipsToBounds = true
+//        customView.layer.cornerRadius = 15
+//        customView.backgroundColor = .green
+//        customView.layer.borderColor = UIColor.lightGray.cgColor
+//        customView.layer.borderWidth = 3
+//        customView.layer.cornerRadius = 15
+//        customView.clipsToBounds = true
+        self.layer.cornerRadius = 15
+        self.backgroundColor = .green
         self.addSubview(customView)
-//
     }
-    
-    @IBAction func requestButtonClicked(_ sender: Any) {
-        self.delegate?.requestButtonEvent()
-    }
-    
-    
+
 }

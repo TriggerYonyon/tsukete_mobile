@@ -7,6 +7,7 @@
 
 import GoogleMapsUtils
 
+// Cluster Item Model
 class POIItem: NSObject, GMUClusterItem {
     var position: CLLocationCoordinate2D
     
