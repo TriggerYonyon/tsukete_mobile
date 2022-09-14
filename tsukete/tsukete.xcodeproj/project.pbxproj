@@ -7,8 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3F50D78ED9C9C804B09867B4 /* libPods-tsukete-tsuketeUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3A5243790C7D6E2A821202 /* libPods-tsukete-tsuketeUITests.a */; };
-		50A540320E44A18A54CE9E4C /* libPods-tsukete.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3097EFD3F7A0E4E24E176768 /* libPods-tsukete.a */; };
+		51879ADDAA694D0FC231E091 /* libPods-tsukete-tsuketeUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 76F1F15DC4B3DBE0B2A4A2A0 /* libPods-tsukete-tsuketeUITests.a */; };
+		89108C2747E938E8CE2F3296 /* libPods-tsuketeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D8B960B57438397629643E8 /* libPods-tsuketeTests.a */; };
+		9430733028D0C79C008C183C /* testCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9430732F28D0C79C008C183C /* testCustomView.swift */; };
+		9437612828D1A25F0061A1AF /* DetailCardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9437612728D1A25F0061A1AF /* DetailCardVC.swift */; };
+		9437612A28D1A2E80061A1AF /* DetailCardVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9437612928D1A2E80061A1AF /* DetailCardVC.storyboard */; };
+		9437612D28D1CDA60061A1AF /* SeatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9437612B28D1CDA60061A1AF /* SeatTableViewCell.swift */; };
+		9437612E28D1CDA60061A1AF /* SeatTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9437612C28D1CDA60061A1AF /* SeatTableViewCell.xib */; };
+		9437613028D1CE630061A1AF /* explain2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9437612F28D1CE630061A1AF /* explain2.png */; };
+		9437613228D1CE680061A1AF /* explain3.png in Resources */ = {isa = PBXBuildFile; fileRef = 9437613128D1CE680061A1AF /* explain3.png */; };
+		9437613428D1CE6F0061A1AF /* explainBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 9437613328D1CE6F0061A1AF /* explainBackground.png */; };
+		9437613628D1CE750061A1AF /* explain4.png in Resources */ = {isa = PBXBuildFile; fileRef = 9437613528D1CE750061A1AF /* explain4.png */; };
+		944CBF1528D174EF008EB159 /* FontModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944CBF1428D174EF008EB159 /* FontModel.swift */; };
+		944CBF1928D176EB008EB159 /* serverPlaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944CBF1828D176EB008EB159 /* serverPlaceModel.swift */; };
+		945731C428D1D03F0037C0B3 /* chair.png in Resources */ = {isa = PBXBuildFile; fileRef = 945731C328D1D03F0037C0B3 /* chair.png */; };
+		945731C628D1D0450037C0B3 /* table.png in Resources */ = {isa = PBXBuildFile; fileRef = 945731C528D1D0450037C0B3 /* table.png */; };
+		94644DF428D061A6002E3C2C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94644DF228D061A6002E3C2C /* ProfileViewController.swift */; };
+		94644DF528D061A6002E3C2C /* ProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94644DF328D061A6002E3C2C /* ProfileViewController.xib */; };
+		9475E29928CF5E8E0046292A /* POIItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9475E29828CF5E8E0046292A /* POIItem.swift */; };
+		947A1CF428D072510080ADCF /* RestaurantSmallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947A1CF328D072510080ADCF /* RestaurantSmallView.swift */; };
+		947A1CFA28D072F00080ADCF /* RestaurantSmallView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 947A1CF928D072F00080ADCF /* RestaurantSmallView.xib */; };
 		94A0AC9328CED05E003F0F95 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A0AC9228CED05E003F0F95 /* AppDelegate.swift */; };
 		94A0AC9528CED05E003F0F95 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A0AC9428CED05E003F0F95 /* SceneDelegate.swift */; };
 		94A0AC9728CED05E003F0F95 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A0AC9628CED05E003F0F95 /* ViewController.swift */; };
@@ -24,9 +42,14 @@
 		94A0ACD428CED98D003F0F95 /* OnboardingPageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A0ACD228CED98D003F0F95 /* OnboardingPageVC.swift */; };
 		94A0ACD828CEF31C003F0F95 /* OnboardingItemVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A0ACD628CEF31C003F0F95 /* OnboardingItemVC.swift */; };
 		94A0ACD928CEF31C003F0F95 /* OnboardingItemVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94A0ACD728CEF31C003F0F95 /* OnboardingItemVC.xib */; };
-		94F1410628CF12EE0012B930 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F1410428CF12EE0012B930 /* MapViewController.swift */; };
-		94F1410728CF12EE0012B930 /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94F1410528CF12EE0012B930 /* MapViewController.xib */; };
-		FD847256D788CE520B29AFE9 /* libPods-tsuketeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 241DBEB702A2DBBD20C4910E /* libPods-tsuketeTests.a */; };
+		94B9A37A28D1E3D000654450 /* LiveSeatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B9A37928D1E3D000654450 /* LiveSeatsView.swift */; };
+		94B9A37C28D1E3DC00654450 /* LiveSeatsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94B9A37B28D1E3DC00654450 /* LiveSeatsView.xib */; };
+		94B9A37E28D1E5CF00654450 /* seatsExample.png in Resources */ = {isa = PBXBuildFile; fileRef = 94B9A37D28D1E5CF00654450 /* seatsExample.png */; };
+		94B9A38028D1ECAD00654450 /* serverSeatsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B9A37F28D1ECAD00654450 /* serverSeatsModel.swift */; };
+		94B9A38328D1EEAB00654450 /* DetailListSeatsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B9A38128D1EEAB00654450 /* DetailListSeatsVC.swift */; };
+		94B9A38428D1EEAB00654450 /* DetailListSeatsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94B9A38228D1EEAB00654450 /* DetailListSeatsVC.xib */; };
+		94D18EC828D0E3CA00D5650E /* testCustomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94D18EC728D0E3CA00D5650E /* testCustomView.xib */; };
+		EE4505C2BF758B1EE9E797C5 /* libPods-tsukete.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1F104BC3B25C91A93B0772D /* libPods-tsukete.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,12 +70,29 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		241DBEB702A2DBBD20C4910E /* libPods-tsuketeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tsuketeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3097EFD3F7A0E4E24E176768 /* libPods-tsukete.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tsukete.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D8B960B57438397629643E8 /* libPods-tsuketeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tsuketeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		32F31AA9E8200D68F4A536B4 /* Pods-tsuketeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tsuketeTests.release.xcconfig"; path = "Target Support Files/Pods-tsuketeTests/Pods-tsuketeTests.release.xcconfig"; sourceTree = "<group>"; };
 		5264F859F1A2C81D90C2C7F6 /* Pods-tsukete.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tsukete.debug.xcconfig"; path = "Target Support Files/Pods-tsukete/Pods-tsukete.debug.xcconfig"; sourceTree = "<group>"; };
-		6B3A5243790C7D6E2A821202 /* libPods-tsukete-tsuketeUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tsukete-tsuketeUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		76F1F15DC4B3DBE0B2A4A2A0 /* libPods-tsukete-tsuketeUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tsukete-tsuketeUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		79D30214373D5BF68D8DC036 /* Pods-tsukete-tsuketeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tsukete-tsuketeUITests.debug.xcconfig"; path = "Target Support Files/Pods-tsukete-tsuketeUITests/Pods-tsukete-tsuketeUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		9430732F28D0C79C008C183C /* testCustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testCustomView.swift; sourceTree = "<group>"; };
+		9437612728D1A25F0061A1AF /* DetailCardVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCardVC.swift; sourceTree = "<group>"; };
+		9437612928D1A2E80061A1AF /* DetailCardVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DetailCardVC.storyboard; sourceTree = "<group>"; };
+		9437612B28D1CDA60061A1AF /* SeatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeatTableViewCell.swift; sourceTree = "<group>"; };
+		9437612C28D1CDA60061A1AF /* SeatTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SeatTableViewCell.xib; sourceTree = "<group>"; };
+		9437612F28D1CE630061A1AF /* explain2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explain2.png; sourceTree = "<group>"; };
+		9437613128D1CE680061A1AF /* explain3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explain3.png; sourceTree = "<group>"; };
+		9437613328D1CE6F0061A1AF /* explainBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explainBackground.png; sourceTree = "<group>"; };
+		9437613528D1CE750061A1AF /* explain4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explain4.png; sourceTree = "<group>"; };
+		944CBF1428D174EF008EB159 /* FontModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontModel.swift; sourceTree = "<group>"; };
+		944CBF1828D176EB008EB159 /* serverPlaceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = serverPlaceModel.swift; sourceTree = "<group>"; };
+		945731C328D1D03F0037C0B3 /* chair.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chair.png; sourceTree = "<group>"; };
+		945731C528D1D0450037C0B3 /* table.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table.png; sourceTree = "<group>"; };
+		94644DF228D061A6002E3C2C /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		94644DF328D061A6002E3C2C /* ProfileViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileViewController.xib; sourceTree = "<group>"; };
+		9475E29828CF5E8E0046292A /* POIItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = POIItem.swift; sourceTree = "<group>"; };
+		947A1CF328D072510080ADCF /* RestaurantSmallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantSmallView.swift; sourceTree = "<group>"; };
+		947A1CF928D072F00080ADCF /* RestaurantSmallView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RestaurantSmallView.xib; sourceTree = "<group>"; };
 		94A0AC8F28CED05E003F0F95 /* tsukete.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tsukete.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		94A0AC9228CED05E003F0F95 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		94A0AC9428CED05E003F0F95 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -72,10 +112,16 @@
 		94A0ACD228CED98D003F0F95 /* OnboardingPageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageVC.swift; sourceTree = "<group>"; };
 		94A0ACD628CEF31C003F0F95 /* OnboardingItemVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemVC.swift; sourceTree = "<group>"; };
 		94A0ACD728CEF31C003F0F95 /* OnboardingItemVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OnboardingItemVC.xib; sourceTree = "<group>"; };
-		94F1410428CF12EE0012B930 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
-		94F1410528CF12EE0012B930 /* MapViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MapViewController.xib; sourceTree = "<group>"; };
+		94B9A37928D1E3D000654450 /* LiveSeatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveSeatsView.swift; sourceTree = "<group>"; };
+		94B9A37B28D1E3DC00654450 /* LiveSeatsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LiveSeatsView.xib; sourceTree = "<group>"; };
+		94B9A37D28D1E5CF00654450 /* seatsExample.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = seatsExample.png; sourceTree = "<group>"; };
+		94B9A37F28D1ECAD00654450 /* serverSeatsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = serverSeatsModel.swift; sourceTree = "<group>"; };
+		94B9A38128D1EEAB00654450 /* DetailListSeatsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailListSeatsVC.swift; sourceTree = "<group>"; };
+		94B9A38228D1EEAB00654450 /* DetailListSeatsVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailListSeatsVC.xib; sourceTree = "<group>"; };
+		94D18EC728D0E3CA00D5650E /* testCustomView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = testCustomView.xib; sourceTree = "<group>"; };
 		9ACAFC9115E9FCA9D79F2977 /* Pods-tsukete-tsuketeUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tsukete-tsuketeUITests.release.xcconfig"; path = "Target Support Files/Pods-tsukete-tsuketeUITests/Pods-tsukete-tsuketeUITests.release.xcconfig"; sourceTree = "<group>"; };
 		EEB8A502276E7E8A74897EA6 /* Pods-tsukete.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tsukete.release.xcconfig"; path = "Target Support Files/Pods-tsukete/Pods-tsukete.release.xcconfig"; sourceTree = "<group>"; };
+		F1F104BC3B25C91A93B0772D /* libPods-tsukete.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tsukete.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFE02689D00FB57ABC761D56 /* Pods-tsuketeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tsuketeTests.debug.xcconfig"; path = "Target Support Files/Pods-tsuketeTests/Pods-tsuketeTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -84,7 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				50A540320E44A18A54CE9E4C /* libPods-tsukete.a in Frameworks */,
+				EE4505C2BF758B1EE9E797C5 /* libPods-tsukete.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,7 +138,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FD847256D788CE520B29AFE9 /* libPods-tsuketeTests.a in Frameworks */,
+				89108C2747E938E8CE2F3296 /* libPods-tsuketeTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,7 +146,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F50D78ED9C9C804B09867B4 /* libPods-tsukete-tsuketeUITests.a in Frameworks */,
+				51879ADDAA694D0FC231E091 /* libPods-tsukete-tsuketeUITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,9 +198,7 @@
 				94A0ACC728CED383003F0F95 /* Controller */,
 				94A0ACC628CED37D003F0F95 /* Model */,
 				94A0ACC528CED378003F0F95 /* View */,
-				94A0AC9828CED05E003F0F95 /* Main.storyboard */,
 				94A0AC9E28CED061003F0F95 /* Assets.xcassets */,
-				94A0ACA028CED061003F0F95 /* LaunchScreen.storyboard */,
 				94A0ACA328CED061003F0F95 /* Info.plist */,
 				94A0AC9B28CED05E003F0F95 /* tsukete.xcdatamodeld */,
 			);
@@ -182,9 +226,18 @@
 			isa = PBXGroup;
 			children = (
 				94A0AC9628CED05E003F0F95 /* ViewController.swift */,
-				94A0ACD228CED98D003F0F95 /* OnboardingPageVC.swift */,
+				94644DF228D061A6002E3C2C /* ProfileViewController.swift */,
 				94A0ACD628CEF31C003F0F95 /* OnboardingItemVC.swift */,
-				94F1410428CF12EE0012B930 /* MapViewController.swift */,
+				947A1CF328D072510080ADCF /* RestaurantSmallView.swift */,
+				9430732F28D0C79C008C183C /* testCustomView.swift */,
+				9437612728D1A25F0061A1AF /* DetailCardVC.swift */,
+				9437612928D1A2E80061A1AF /* DetailCardVC.storyboard */,
+				9437612B28D1CDA60061A1AF /* SeatTableViewCell.swift */,
+				9437612C28D1CDA60061A1AF /* SeatTableViewCell.xib */,
+				94B9A37928D1E3D000654450 /* LiveSeatsView.swift */,
+				94B9A37B28D1E3DC00654450 /* LiveSeatsView.xib */,
+				94B9A38128D1EEAB00654450 /* DetailListSeatsVC.swift */,
+				94B9A38228D1EEAB00654450 /* DetailListSeatsVC.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -192,6 +245,10 @@
 		94A0ACC628CED37D003F0F95 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				9475E29828CF5E8E0046292A /* POIItem.swift */,
+				944CBF1428D174EF008EB159 /* FontModel.swift */,
+				944CBF1828D176EB008EB159 /* serverPlaceModel.swift */,
+				94B9A37F28D1ECAD00654450 /* serverSeatsModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -199,6 +256,7 @@
 		94A0ACC728CED383003F0F95 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				94A0ACD228CED98D003F0F95 /* OnboardingPageVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -207,7 +265,14 @@
 			isa = PBXGroup;
 			children = (
 				94A0ACC928CED3C8003F0F95 /* tsuketeLogo.png */,
+				9437613328D1CE6F0061A1AF /* explainBackground.png */,
 				94A0ACCB28CED59F003F0F95 /* explain1.png */,
+				9437612F28D1CE630061A1AF /* explain2.png */,
+				9437613128D1CE680061A1AF /* explain3.png */,
+				9437613528D1CE750061A1AF /* explain4.png */,
+				945731C328D1D03F0037C0B3 /* chair.png */,
+				945731C528D1D0450037C0B3 /* table.png */,
+				94B9A37D28D1E5CF00654450 /* seatsExample.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -215,8 +280,12 @@
 		94A0ACD128CED6F9003F0F95 /* Storyboard */ = {
 			isa = PBXGroup;
 			children = (
+				94A0ACA028CED061003F0F95 /* LaunchScreen.storyboard */,
+				94A0AC9828CED05E003F0F95 /* Main.storyboard */,
 				94A0ACD728CEF31C003F0F95 /* OnboardingItemVC.xib */,
-				94F1410528CF12EE0012B930 /* MapViewController.xib */,
+				94644DF328D061A6002E3C2C /* ProfileViewController.xib */,
+				947A1CF928D072F00080ADCF /* RestaurantSmallView.xib */,
+				94D18EC728D0E3CA00D5650E /* testCustomView.xib */,
 			);
 			path = Storyboard;
 			sourceTree = "<group>";
@@ -224,9 +293,9 @@
 		F9C4C54D2667930BA143E4DF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3097EFD3F7A0E4E24E176768 /* libPods-tsukete.a */,
-				6B3A5243790C7D6E2A821202 /* libPods-tsukete-tsuketeUITests.a */,
-				241DBEB702A2DBBD20C4910E /* libPods-tsuketeTests.a */,
+				F1F104BC3B25C91A93B0772D /* libPods-tsukete.a */,
+				76F1F15DC4B3DBE0B2A4A2A0 /* libPods-tsukete-tsuketeUITests.a */,
+				0D8B960B57438397629643E8 /* libPods-tsuketeTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -340,13 +409,26 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94D18EC828D0E3CA00D5650E /* testCustomView.xib in Resources */,
+				945731C628D1D0450037C0B3 /* table.png in Resources */,
+				94644DF528D061A6002E3C2C /* ProfileViewController.xib in Resources */,
+				9437613628D1CE750061A1AF /* explain4.png in Resources */,
+				945731C428D1D03F0037C0B3 /* chair.png in Resources */,
+				9437613028D1CE630061A1AF /* explain2.png in Resources */,
+				9437613228D1CE680061A1AF /* explain3.png in Resources */,
 				94A0ACCA28CED3C8003F0F95 /* tsuketeLogo.png in Resources */,
 				94A0ACA228CED061003F0F95 /* LaunchScreen.storyboard in Resources */,
 				94A0ACCC28CED59F003F0F95 /* explain1.png in Resources */,
 				94A0AC9F28CED061003F0F95 /* Assets.xcassets in Resources */,
-				94F1410728CF12EE0012B930 /* MapViewController.xib in Resources */,
+				94B9A37E28D1E5CF00654450 /* seatsExample.png in Resources */,
+				9437612A28D1A2E80061A1AF /* DetailCardVC.storyboard in Resources */,
+				947A1CFA28D072F00080ADCF /* RestaurantSmallView.xib in Resources */,
+				94B9A38428D1EEAB00654450 /* DetailListSeatsVC.xib in Resources */,
 				94A0ACD928CEF31C003F0F95 /* OnboardingItemVC.xib in Resources */,
+				9437613428D1CE6F0061A1AF /* explainBackground.png in Resources */,
+				9437612E28D1CDA60061A1AF /* SeatTableViewCell.xib in Resources */,
 				94A0AC9A28CED05E003F0F95 /* Main.storyboard in Resources */,
+				94B9A37C28D1E3DC00654450 /* LiveSeatsView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,13 +556,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94B9A38328D1EEAB00654450 /* DetailListSeatsVC.swift in Sources */,
 				94A0AC9728CED05E003F0F95 /* ViewController.swift in Sources */,
 				94A0AC9D28CED05E003F0F95 /* tsukete.xcdatamodeld in Sources */,
+				944CBF1528D174EF008EB159 /* FontModel.swift in Sources */,
 				94A0AC9328CED05E003F0F95 /* AppDelegate.swift in Sources */,
+				9437612D28D1CDA60061A1AF /* SeatTableViewCell.swift in Sources */,
+				9475E29928CF5E8E0046292A /* POIItem.swift in Sources */,
+				9437612828D1A25F0061A1AF /* DetailCardVC.swift in Sources */,
 				94A0ACD428CED98D003F0F95 /* OnboardingPageVC.swift in Sources */,
+				944CBF1928D176EB008EB159 /* serverPlaceModel.swift in Sources */,
+				94B9A38028D1ECAD00654450 /* serverSeatsModel.swift in Sources */,
 				94A0ACD828CEF31C003F0F95 /* OnboardingItemVC.swift in Sources */,
+				94B9A37A28D1E3D000654450 /* LiveSeatsView.swift in Sources */,
+				94644DF428D061A6002E3C2C /* ProfileViewController.swift in Sources */,
 				94A0AC9528CED05E003F0F95 /* SceneDelegate.swift in Sources */,
-				94F1410628CF12EE0012B930 /* MapViewController.swift in Sources */,
+				947A1CF428D072510080ADCF /* RestaurantSmallView.swift in Sources */,
+				9430733028D0C79C008C183C /* testCustomView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -717,7 +809,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FFE02689D00FB57ABC761D56 /* Pods-tsuketeTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -738,7 +830,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 32F31AA9E8200D68F4A536B4 /* Pods-tsuketeTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -759,7 +851,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 79D30214373D5BF68D8DC036 /* Pods-tsukete-tsuketeUITests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = UNTPRP3C66;
@@ -778,7 +870,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9ACAFC9115E9FCA9D79F2977 /* Pods-tsukete-tsuketeUITests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = UNTPRP3C66;
