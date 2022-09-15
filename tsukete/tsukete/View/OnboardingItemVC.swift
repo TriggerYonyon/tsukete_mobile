@@ -13,17 +13,23 @@ class OnboardingItemVC: UIViewController {
     var mainText = ""
     var topImage: UIImage? = UIImage()
     
+    @IBOutlet weak var logoImageView: UIImageView! {
+        didSet {
+            self.logoImageView.image = UIImage(named: "tsuketeLogo")
+        }
+    }
+    
     @IBOutlet private weak var topImageView: UIImageView!
     
     @IBOutlet private weak var mainTitleLabel: UILabel! {
         didSet {
-            mainTitleLabel.font = .systemFont(ofSize: 20, weight: .medium)
+            mainTitleLabel.font = .systemFont(ofSize: 17, weight: .medium)
         }
     }
     
     @IBOutlet weak var explainLabel: UILabel! {
         didSet {
-            explainLabel.font = .systemFont(ofSize: 25, weight: .bold)
+            explainLabel.font = .systemFont(ofSize: 20, weight: .bold)
         }
     }
     

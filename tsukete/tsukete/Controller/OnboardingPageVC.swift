@@ -21,20 +21,25 @@ class OnboardingPageVC: UIPageViewController {
     
     func makePageVC() {
         let itemVC1 = OnboardingItemVC.init(nibName: "OnboardingItemVC", bundle: nil)
-        itemVC1.topImage = UIImage(named: "explain1")
+        itemVC1.topImage = UIImage(named: "newExplain1")
         itemVC1.mainText = "混雑状況を知りたい店を選択"
         
         let itemVC2 = OnboardingItemVC.init(nibName: "OnboardingItemVC", bundle: nil)
-        itemVC2.topImage = UIImage(named: "explain1")
-        itemVC2.mainText = "2nd explain"
+        itemVC2.topImage = UIImage(named: "explain2")
+        itemVC2.mainText = "席が空いているか事前に確認"
         
         let itemVC3 = OnboardingItemVC.init(nibName: "OnboardingItemVC", bundle: nil)
-        itemVC3.topImage = UIImage(named: "explain1")
-        itemVC3.mainText = "3rd explain"
+        itemVC3.topImage = UIImage(named: "explain3")
+        itemVC3.mainText = "実際にお店に行く"
+        
+        let itemVC4 = OnboardingItemVC.init(nibName: "OnboardingItemVC", bundle: nil)
+        itemVC4.topImage = UIImage(named: "explain4")
+        itemVC4.mainText = "行きつけのお店に設置されていなければ、支援金を払って設置リクエスト"
         
         pages.append(itemVC1)
         pages.append(itemVC2)
         pages.append(itemVC3)
+        pages.append(itemVC4)
         
         setViewControllers([itemVC1], direction: .forward, animated: true)
         self.dataSource = self
@@ -91,7 +96,7 @@ class OnboardingPageVC: UIPageViewController {
         //pageの数ほど、　.のUIを表示させる
         pageControl.numberOfPages = pages.count
         pageControl.currentPage = startIndex
-        pageControl.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -200).isActive = true
+        pageControl.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -170).isActive = true
         pageControl.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
             
         // ✍️PageControlには、その.をクリックして、当てはまるpageに移動するようなEventがある

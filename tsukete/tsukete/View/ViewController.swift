@@ -25,6 +25,9 @@ class ViewController: UIViewController {
     var didShowOnboardingView = false
     var showLocationRequest = false
     var appearKeyboard = false
+    
+    // 最初のtitleは、tokyoにした
+    var markerTitle = "Tokyo"
     // お店の名前を検索でヒット
     var searchText = ""
     // APIから戻ってきたnameとsearchTextをヒットさせ、その中の住所を持ってくる
@@ -33,6 +36,7 @@ class ViewController: UIViewController {
     var restauName = ""
     let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: 300, height: 0))
     let geocoder = CLGeocoder()
+    var marker = GMSMarker()
     
     // Server API Model
     // リクエストしたお店かどうか
@@ -54,15 +58,23 @@ class ViewController: UIViewController {
     // ⚠️現在地を東京にcustom 設定
     //35.681223
     //139.767059
-    var defaultPositionLat: CLLocationDegrees = 35.681223
-    var defaultPositionLng: CLLocationDegrees = 139.767059
+    // 初期値設定 (検索による初期値設定)
+    var searchPositionLat: CLLocationDegrees = 35.681223
+    var searchPositionLng: CLLocationDegrees = 139.767059
+    
+    // 最初から指定しちゃう設定
+    var defaultPositionLat = 35.662737
+    var defaultPositionLng = 139.70899
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigateConfigure()
         searchBarConfigure()
         mapConfigure()
-        markerConfigure()
+        // MARK: setInitMarker: ❗️CHANGE 指定してからmarkerを設定
+        // -> 今後requestしたお店だけ表示されるように変更予定
+        setInitMarker()
+//        markerConfigure()
         mapView.delegate = self
         self.view.addSubview(mapView)
         self.view.sendSubviewToBack(mapView)
@@ -76,6 +88,7 @@ class ViewController: UIViewController {
         cardViewGesture()
         addKeyboardObserver()
         requestRestaurantAPI()
+    
         requestGetImage()
     }
     
@@ -85,7 +98,31 @@ class ViewController: UIViewController {
     }
     
     // MARK: 🔥検索した名前の位置を読み込む
-    func getLocation() {
+    func getLocation(placeName place: String, addressName address: String) {
+        markerTitle = place
+        geocoder.geocodeAddressString(address) { (placemarks, error) in
+            if let hasPlace = placemarks {
+                print("placemarks.count: \(hasPlace.count)")
+                for place in hasPlace {
+                    if let location = place.location {
+                        print("latitude: \(location.coordinate.latitude)")
+                        print("longitude: \(location.coordinate.longitude)")
+                        self.searchPositionLat = location.coordinate.latitude
+                        self.searchPositionLng = location.coordinate.longitude
+                        print(self.searchPositionLat)
+                        print(self.searchPositionLng)
+                    }
+                }
+            }
+            //位置修正を行なったため、mapとmarkerを移動させる
+            self.mapCameraUpdate()
+            self.markerConfigure(newLocate: CLLocationCoordinate2D(latitude: self.searchPositionLat, longitude: self.searchPositionLng))
+            
+        }
+        
+        //位置修正を行なったため、mapとmarkerを移動させる
+//        mapCameraUpdate()
+//        markerConfigure(newLocate: CLLocationCoordinate2D(latitude: self.searchPositionLat, longitude: self.searchPositionLng))
         
     }
     
@@ -189,12 +226,20 @@ class ViewController: UIViewController {
     }
     
     private func mapConfigure() {
-        let camera:GMSCameraPosition = GMSCameraPosition.camera(withLatitude: defaultPositionLat, longitude: defaultPositionLng, zoom: 11)
+        let camera:GMSCameraPosition = GMSCameraPosition.camera(withLatitude: searchPositionLat, longitude: searchPositionLng, zoom: 11)
         mapView = GMSMapView(frame: self.view.bounds, camera: camera)
         mapView.settings.scrollGestures = true
         mapView.settings.zoomGestures = true
         mapView.settings.myLocationButton = true
         mapView.isMyLocationEnabled = true
+    }
+    
+    private func mapCameraUpdate() {
+//        let newCamera = GMSCameraPosition(latitude: self.searchPositionLat, longitude: self.searchPositionLng, zoom: 13)
+        let targetLocate = CLLocationCoordinate2D(latitude: searchPositionLat, longitude: searchPositionLng)
+        mapView.animate(toLocation: targetLocate)
+        mapView.animate(toZoom: 15)
+//        let zoomCamera = GMSCameraUpdate.setTarget(targetLocate, zoom: 13)
     }
     
     private func searchBarConfigure() {
@@ -240,6 +285,17 @@ class ViewController: UIViewController {
         
         // dataをdetailVCに渡す
         detailVC.seatsModelByPlace = resultPlaceModel
+        
+        if let hasImage1 = self.cardView.image1.image {
+            detailVC.image1 = hasImage1
+        }
+        if let hasImage2 = self.cardView.image2.image {
+            detailVC.image2 = hasImage2
+        }
+        if let hasImage3 = self.cardView.image3.image {
+            detailVC.image3 = hasImage3
+        }
+        
         detailVC.restaurantTitle = cardView.restaurantName.text!
         // CoverVerticalのモード
         detailVC.modalTransitionStyle = .coverVertical
@@ -291,14 +347,17 @@ class ViewController: UIViewController {
         print(appearKeyboard)
     }
     
-    private func markerConfigure() {
-        let position = CLLocationCoordinate2D(latitude: defaultPositionLat, longitude: defaultPositionLng)
-        let marker = GMSMarker(position: position)
-        marker.title = "Tokyo"
+    private func markerConfigure(newLocate locate: CLLocationCoordinate2D) {
+//        let position = CLLocationCoordinate2D(latitude: searchPositionLat, longitude: searchPositionLng)
+        marker.position = locate
+        marker.title = markerTitle
         // markerの色変更
-        marker.icon = GMSMarker.markerImage(with: .orange.withAlphaComponent(0.5))
-        marker.map = mapView
-        marker.appearAnimation = .pop
+        marker.icon = GMSMarker.markerImage(with: .orange.withAlphaComponent(0.3))
+        
+        DispatchQueue.main.async {
+            self.marker.map = self.mapView
+            self.marker.appearAnimation = .pop
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -365,15 +424,22 @@ extension ViewController: UISearchBarDelegate, UISearchResultsUpdating {
             return
         }
         print("search")
+        print(searchText)
         
         searchText = hasText
         if isMatchedName() {
+            // markerを追加してから、変更する方法
+            // nil してからまた、入れる
+            if marker.map != nil {
+                marker.map = nil
+            }
             print("true: \(restauName)")
+            searchBar.endEditing(true)
             // MARK: 🔥 searchして、ヒットしたらGeoCodingを行う
-            
+            getLocation(placeName: restauName, addressName: targetAddress)
+        } else {
+            markerTitle = ""
         }
-        
-        print(searchText)
     }
     
     func updateSearchResults(for searchController: UISearchController) {
@@ -381,6 +447,20 @@ extension ViewController: UISearchBarDelegate, UISearchResultsUpdating {
             return
         }
         print(hasText)
+    }
+    
+    // 最初のmarker設定
+    func setInitMarker() {
+        let locate = CLLocationCoordinate2D(latitude: defaultPositionLat, longitude: defaultPositionLng)
+        marker.position = locate
+        marker.title = markerTitle
+        // markerの色変更
+        marker.icon = GMSMarker.markerImage(with: .orange.withAlphaComponent(0.3))
+        
+        DispatchQueue.main.async {
+            self.marker.map = self.mapView
+            self.marker.appearAnimation = .pop
+        }
     }
     
 
@@ -552,8 +632,8 @@ extension ViewController: cardViewDelegate {
 //    private func generateClusterItems() {
 //        let extent = 0.01
 //        for _ in 1...100 {
-//            let lat = defaultPositionLat + extent * randomScale()
-//            let lng = defaultPositionLng + extent * randomScale()
+//            let lat = searchPositionLat + extent * randomScale()
+//            let lng = searchPositionLng + extent * randomScale()
 //            let item = POIItem(position: CLLocationCoordinate2DMake(lat, lng))
 //            clusterManager.add(item)
 //        }
