@@ -9,35 +9,18 @@ import Foundation
 
 // Seats Model API
 
-struct SeatsModel: Codable {
-    let resultCount: Int
-    let results: [SeatsResult]
-}
-
-struct SeatsResult: Codable {
-    // ⚠️バックエンドのサーバーがデータを必ずしも引き渡すという保証はないため、求めるデータがないときのエラーを防ぐようなコード作成が必要 -> Optional Typeにする❗️
-    let trackName: String?
-    let previewUrl: String?
-    let image: String?
-    let shortDescription: String?
-    let longDescription: String?
-    let trackPrice: Double?
-    let currency: String?
-    let releaseDate: String?
-//    let country: String
-    
-    // URL Requestから得られたkeyをそのまま使うのではなく、変更して使いたい!
-    // その場合は、CodingKeyを使って、名前を変更できる
-    // しかし、使いたいkeyを全部書く必要がある
-    enum CodingKeys: String, CodingKey {
-        case image = "artworkUrl100"
-        case trackName
-        case previewUrl
-        case shortDescription
-        case longDescription
-        case trackPrice
-        case currency
-        case releaseDate
-//        case country
-    }
-}
+//struct SeatsInfo: Codable {
+//    // ⚠️バックエンドのサーバーがデータを必ずしも引き渡すという保証はないため、求めるデータがないときのエラーを防ぐようなコード作成が必要 -> Optional Typeにする❗️
+//    let id: String?
+//    // テーブルかカウンターか
+//    let type: String?
+//    // 座席数
+//    let capacity: Int?
+//    // コンセントの席であるか
+//    let hasOutlet: Bool?
+//    // エアコンの近くか
+//    let isNearAirConditioner: Bool?
+//    // 空席かないか
+//    let isUsed: Bool?
+//    let registeredAt: String?
+//}

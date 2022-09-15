@@ -12,14 +12,21 @@ enum DisplayType {
     case lists
 }
 
+enum CheckType {
+    case isChecked
+    case notChecked
+}
+
 class DetailCardVC: UIViewController {
-    
+    let scrollView: UIScrollView! = UIScrollView()
     var restaurantTitle = ""
     var displayType = DisplayType.seats
-    let liveSeatsView = LiveSeatsView(frame: CGRect(x: 0, y: 0, width: 320, height: 200))
+    var checkType = CheckType.notChecked
+    let liveSeatsView = LiveSeatsView(frame: .zero)
+    let seatTableView: UITableView! = UITableView()
     
     // seats Model
-    var seatsModel: SeatsModel?
+    var seatsModelByPlace: [PlaceModel] = [PlaceModel]()
     
     @IBOutlet weak var restaurantLabel: UILabel! {
         didSet {
@@ -27,9 +34,34 @@ class DetailCardVC: UIViewController {
             restaurantLabel.font = .systemFont(ofSize: 20, weight: .bold)
         }
     }
+    
+    @IBOutlet weak var dismissButton: UIButton! {
+        didSet {
+            dismissButton.setTitle("", for: .normal)
+            dismissButton.tintColor = .systemGray
+        }
+    }
+    
     @IBOutlet weak var seatsTypeSegmentControl: UISegmentedControl!
     
-    @IBOutlet weak var seatsInfoView: UIView!
+    @IBOutlet weak var seatCheckButton: UIButton! {
+        didSet {
+            seatCheckButton.setTitle("", for: .normal)
+            seatCheckButton.tintColor = .lightGray
+        }
+    }
+    @IBOutlet weak var seatCheckInfoView: UIView!
+    
+    @IBOutlet weak var seatInfoView: UIView! {
+        didSet {
+            seatInfoView.translatesAutoresizingMaskIntoConstraints = false
+            seatInfoView.topAnchor.constraint(equalTo: seatCheckInfoView.bottomAnchor, constant: 10).isActive = true
+            seatInfoView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+            seatInfoView.backgroundColor = .systemGray5
+        }
+    }
+    
+    @IBOutlet weak var checkOnlyVacantSeat: UIButton!
     
     
     // didSetの中で間数を設けて、処理させると、なぜかlayoutでerrorがでちゃう
@@ -37,31 +69,85 @@ class DetailCardVC: UIViewController {
     @IBOutlet weak var restaurantDetailView: testCustomView! {
         didSet {
             restaurantDetailView.restaurantName.text = restaurantTitle
-            restaurantDetailView.imageStackview.translatesAutoresizingMaskIntoConstraints = false
-            restaurantDetailView.imageStackview.heightAnchor.constraint(equalToConstant: 0).isActive = true
-            restaurantDetailView.requestButton.translatesAutoresizingMaskIntoConstraints = false
-            restaurantDetailView.requestButton.heightAnchor.constraint(equalToConstant: 0).isActive = true
-            restaurantDetailView.layer.cornerRadius = 15
-            restaurantDetailView.clipsToBounds = true
-            restaurantDetailView.layer.borderColor = UIColor.lightGray.cgColor
-            restaurantDetailView.layer.borderWidth = 1
         }
     }
     
-    @IBOutlet weak var seatTableView: UITableView!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setCardView()
+        self.view.addSubview(scrollView)
+        setScrollView()
+        self.view.sendSubviewToBack(scrollView)
+        
         setCardConstraints()
+        setSegmentConstraints()
         self.view.addSubview(liveSeatsView)
         setLiveSeatsView()
+        setViewDataConfigure()
+        
+        self.view.addSubview(seatTableView)
+        setTableViewConstraints()
         seatTableView.delegate = self
         seatTableView.dataSource = self
+        registerCell()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        seatTypeViewInitDisplay()
+    }
+    
+    // ⚠️まだ! 空席のみのlistを表示
+    @IBAction func checkVacantSeatClicked(_ sender: Any) {
+        if checkType == .notChecked {
+            checkOnlyVacantSeat.tintColor = .systemBlue.withAlphaComponent(1.0)
+            checkType = .isChecked
+        } else {
+            checkOnlyVacantSeat.tintColor = .lightGray
+            checkType = .notChecked
+        }
+    }
+    
+    // detail Viewをconfigure
+    func setViewDataConfigure() {
+        restaurantDetailView.configure(with: seatsModelByPlace)
+    }
+    
+    
     private func registerCell() {
+        seatTableView.register(UINib(nibName: "SeatTableViewCell", bundle: nil), forCellReuseIdentifier: "SeatTableViewCell")
+    }
+    
+    private func seatTypeViewInitDisplay() {
+        if displayType == .seats {
+            seatTableView.alpha = 0.0
+            liveSeatsView.alpha = 1.0
+        }
+    }
+    
+    private func setScrollView() {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.backgroundColor = .white
         
+        NSLayoutConstraint.activate([
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 30),
+            scrollView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor)
+        ])
+        
+    }
+    
+    private func setTableViewConstraints() {
+        seatTableView.translatesAutoresizingMaskIntoConstraints = false
+        seatTableView.topAnchor.constraint(equalTo: seatInfoView.bottomAnchor).isActive = true
+        seatTableView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 35).isActive = true
+        seatTableView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -35).isActive = true
+        seatTableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+    }
+    
+    private func setSegmentConstraints() {
+        seatsTypeSegmentControl.translatesAutoresizingMaskIntoConstraints = false
+        seatsTypeSegmentControl.topAnchor.constraint(equalTo: restaurantDetailView.bottomAnchor, constant: 20).isActive = true
     }
     
     @IBAction func segmentSelect(_ sender: UISegmentedControl) {
@@ -87,23 +173,29 @@ class DetailCardVC: UIViewController {
     
     private func setLiveSeatsView() {
         liveSeatsView.translatesAutoresizingMaskIntoConstraints = false
-        liveSeatsView.topAnchor.constraint(equalTo: seatsInfoView.bottomAnchor).isActive = true
+        
+        liveSeatsView.widthAnchor.constraint(equalToConstant: 320).isActive = true
+        liveSeatsView.heightAnchor.constraint(equalToConstant: 250).isActive = true
+        liveSeatsView.topAnchor.constraint(equalTo: seatInfoView.bottomAnchor).isActive = true
         liveSeatsView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-    }
-    
-    
-    
-    private func setCardView() {
-        restaurantDetailView.frame = CGRect(x: 0, y: 0, width: 200, height: 300)
     }
     
     private func setCardConstraints() {
         restaurantDetailView.translatesAutoresizingMaskIntoConstraints = false
-
-        restaurantDetailView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100).isActive = true
+        restaurantDetailView.heightAnchor.constraint(equalToConstant: 180).isActive = true
+        restaurantDetailView.imageStackview.heightAnchor.constraint(equalToConstant: 0).isActive = true
+        restaurantDetailView.requestButton.isHidden = true
+        restaurantDetailView.requestButton.heightAnchor.constraint(equalToConstant: 0).isActive = true
+        
+        restaurantDetailView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 70).isActive = true
         restaurantDetailView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        restaurantDetailView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
-        restaurantDetailView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -30).isActive = true
+        restaurantDetailView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 35).isActive = true
+        restaurantDetailView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -35).isActive = true
+        
+        restaurantDetailView.layer.cornerRadius = 15
+        restaurantDetailView.clipsToBounds = true
+        restaurantDetailView.layer.borderColor = UIColor.lightGray.cgColor
+        restaurantDetailView.layer.borderWidth = 1
     }
     
     // Data Model 関連
@@ -112,9 +204,35 @@ class DetailCardVC: UIViewController {
         
     }
     
-    
-    @IBAction func dismissButton(_ sender: Any) {
+    @IBAction func dismissClicked(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    
+}
+
+extension DetailCardVC: cardViewDelegate {
+//    func isAlreadyClicked(selected: isSelected) {
+//        restaurantDetailView.hartButtonState = selected
+//    }
+    
+    func requestButtonEvent() {
+        print("DetaialCardPage -> RequestPage")
+        print("button tapped!")
+    }
+    
+    func hartButtonEvent() {
+        if restaurantDetailView.hartButtonState == .normal {
+            restaurantDetailView.hartButtonState = .selected
+            restaurantDetailView.setHartButton()
+            restaurantDetailView.hartButton.layer.add(restaurantDetailView.bounceAnimation, forKey: nil)
+            print("normal -> selected")
+        } else {
+            restaurantDetailView.hartButtonState = .normal
+            restaurantDetailView.setHartButton()
+            restaurantDetailView.hartButton.layer.add(restaurantDetailView.bounceAnimation, forKey: nil)
+            print("selected -> normal")
+        }
     }
     
     
@@ -126,27 +244,60 @@ extension DetailCardVC: UITableViewDelegate, UITableViewDataSource {
         return UITableView.automaticDimension
     }
     
-    // 1つのSectionに1つのrowを入れる方法で実装
+    // 数
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.seatsModel?.results.count ?? 0
+        // その場所のseatsの数だけを表示
+        return self.seatsModelByPlace[0].seats.count
     }
     
     // RowCellを特定
+    // ❗️cellは、これでOk
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SeatTableViewCell", for: indexPath) as! SeatTableViewCell
         
         // ⚠️modelに合わせて変更するつもり
-        cell.peopleLabel.text = self.seatsModel?.results[indexPath.row].trackName
+        // people capacity
+        let placeInfo = self.seatsModelByPlace[0]
+        let seatModel = self.seatsModelByPlace[0].seats[indexPath.row]
+        let seatCapacity = seatModel.capacity?.description ?? "0"
         
+        cell.peopleLabel.text = seatCapacity + "人"
+        
+        if seatModel.type == "テーブル" {
+            cell.seatType.image = UIImage(named: "table")
+        } else {
+            cell.seatType.image = UIImage(named:"chair")
+        }
+        
+        if let hasConcent = seatModel.hasOutlet {
+            if hasConcent {
+                cell.concentImage.image = UIImage(named: "concent")
+            }
+        }
+        
+        if let hasTabacoSeat = placeInfo.nonSmoking {
+            if hasTabacoSeat {
+                cell.tabacoImage.image = UIImage(named: "noTabaco")
+            }
+        }
+        
+        if let hasUsedAlready = seatModel.isUsed {
+            if hasUsedAlready {
+                cell.vacancyImage.backgroundColor = UIColor(rgb: 0xFE5151)
+            } else {
+                cell.vacancyImage.backgroundColor = UIColor(rgb: 0x06B3EA)
+            }
+        }
         
         return cell
     }
     
     // Select Cellに関するfunc
+    // ❗️ここは、これでok
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailSeatsVC = UIStoryboard(name: "DetailListSeatsVC", bundle: nil).instantiateViewController(withIdentifier: "DetailListSeatsVC") as! DetailListSeatsVC
         tableView.deselectRow(at: indexPath, animated: true)
-        detailSeatsVC.seatsResult = self.seatsModel?.results[indexPath.row]
+        detailSeatsVC.seatsInfo = self.seatsModelByPlace[0].seats[indexPath.row]
         self.present(detailSeatsVC, animated: true, completion: nil)
     }
     

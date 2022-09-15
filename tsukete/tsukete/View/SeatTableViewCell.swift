@@ -7,6 +7,11 @@
 
 import UIKit
 
+//enum SeatType {
+//    case table
+//    case counter
+//}
+
 class SeatTableViewCell: UITableViewCell {
     
     @IBOutlet weak var vacancyImage: UIView! {

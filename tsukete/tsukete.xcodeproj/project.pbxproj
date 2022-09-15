@@ -9,9 +9,10 @@
 /* Begin PBXBuildFile section */
 		51879ADDAA694D0FC231E091 /* libPods-tsukete-tsuketeUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 76F1F15DC4B3DBE0B2A4A2A0 /* libPods-tsukete-tsuketeUITests.a */; };
 		89108C2747E938E8CE2F3296 /* libPods-tsuketeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D8B960B57438397629643E8 /* libPods-tsuketeTests.a */; };
+		9416638428D2D7F400E614C8 /* DetailListSeatsVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9416638328D2D7F400E614C8 /* DetailListSeatsVC.storyboard */; };
+		9416638628D2D86400E614C8 /* DetailCardVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9416638528D2D86400E614C8 /* DetailCardVC.storyboard */; };
 		9430733028D0C79C008C183C /* testCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9430732F28D0C79C008C183C /* testCustomView.swift */; };
 		9437612828D1A25F0061A1AF /* DetailCardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9437612728D1A25F0061A1AF /* DetailCardVC.swift */; };
-		9437612A28D1A2E80061A1AF /* DetailCardVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9437612928D1A2E80061A1AF /* DetailCardVC.storyboard */; };
 		9437612D28D1CDA60061A1AF /* SeatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9437612B28D1CDA60061A1AF /* SeatTableViewCell.swift */; };
 		9437612E28D1CDA60061A1AF /* SeatTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9437612C28D1CDA60061A1AF /* SeatTableViewCell.xib */; };
 		9437613028D1CE630061A1AF /* explain2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9437612F28D1CE630061A1AF /* explain2.png */; };
@@ -47,8 +48,10 @@
 		94B9A37E28D1E5CF00654450 /* seatsExample.png in Resources */ = {isa = PBXBuildFile; fileRef = 94B9A37D28D1E5CF00654450 /* seatsExample.png */; };
 		94B9A38028D1ECAD00654450 /* serverSeatsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B9A37F28D1ECAD00654450 /* serverSeatsModel.swift */; };
 		94B9A38328D1EEAB00654450 /* DetailListSeatsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B9A38128D1EEAB00654450 /* DetailListSeatsVC.swift */; };
-		94B9A38428D1EEAB00654450 /* DetailListSeatsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94B9A38228D1EEAB00654450 /* DetailListSeatsVC.xib */; };
 		94D18EC828D0E3CA00D5650E /* testCustomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94D18EC728D0E3CA00D5650E /* testCustomView.xib */; };
+		94D715CB28D33636003332D9 /* concent.png in Resources */ = {isa = PBXBuildFile; fileRef = 94D715CA28D33636003332D9 /* concent.png */; };
+		94D715CD28D3363C003332D9 /* noTabaco.png in Resources */ = {isa = PBXBuildFile; fileRef = 94D715CC28D3363C003332D9 /* noTabaco.png */; };
+		94E88AD228D2FAB20016A6A6 /* NetworkLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94E88AD128D2FAB20016A6A6 /* NetworkLayer.swift */; };
 		EE4505C2BF758B1EE9E797C5 /* libPods-tsukete.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F1F104BC3B25C91A93B0772D /* libPods-tsukete.a */; };
 /* End PBXBuildFile section */
 
@@ -75,9 +78,10 @@
 		5264F859F1A2C81D90C2C7F6 /* Pods-tsukete.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tsukete.debug.xcconfig"; path = "Target Support Files/Pods-tsukete/Pods-tsukete.debug.xcconfig"; sourceTree = "<group>"; };
 		76F1F15DC4B3DBE0B2A4A2A0 /* libPods-tsukete-tsuketeUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tsukete-tsuketeUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		79D30214373D5BF68D8DC036 /* Pods-tsukete-tsuketeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tsukete-tsuketeUITests.debug.xcconfig"; path = "Target Support Files/Pods-tsukete-tsuketeUITests/Pods-tsukete-tsuketeUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		9416638328D2D7F400E614C8 /* DetailListSeatsVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DetailListSeatsVC.storyboard; sourceTree = "<group>"; };
+		9416638528D2D86400E614C8 /* DetailCardVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DetailCardVC.storyboard; sourceTree = "<group>"; };
 		9430732F28D0C79C008C183C /* testCustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testCustomView.swift; sourceTree = "<group>"; };
 		9437612728D1A25F0061A1AF /* DetailCardVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCardVC.swift; sourceTree = "<group>"; };
-		9437612928D1A2E80061A1AF /* DetailCardVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DetailCardVC.storyboard; sourceTree = "<group>"; };
 		9437612B28D1CDA60061A1AF /* SeatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeatTableViewCell.swift; sourceTree = "<group>"; };
 		9437612C28D1CDA60061A1AF /* SeatTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SeatTableViewCell.xib; sourceTree = "<group>"; };
 		9437612F28D1CE630061A1AF /* explain2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explain2.png; sourceTree = "<group>"; };
@@ -117,8 +121,10 @@
 		94B9A37D28D1E5CF00654450 /* seatsExample.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = seatsExample.png; sourceTree = "<group>"; };
 		94B9A37F28D1ECAD00654450 /* serverSeatsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = serverSeatsModel.swift; sourceTree = "<group>"; };
 		94B9A38128D1EEAB00654450 /* DetailListSeatsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailListSeatsVC.swift; sourceTree = "<group>"; };
-		94B9A38228D1EEAB00654450 /* DetailListSeatsVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailListSeatsVC.xib; sourceTree = "<group>"; };
 		94D18EC728D0E3CA00D5650E /* testCustomView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = testCustomView.xib; sourceTree = "<group>"; };
+		94D715CA28D33636003332D9 /* concent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = concent.png; sourceTree = "<group>"; };
+		94D715CC28D3363C003332D9 /* noTabaco.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noTabaco.png; sourceTree = "<group>"; };
+		94E88AD128D2FAB20016A6A6 /* NetworkLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLayer.swift; sourceTree = "<group>"; };
 		9ACAFC9115E9FCA9D79F2977 /* Pods-tsukete-tsuketeUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tsukete-tsuketeUITests.release.xcconfig"; path = "Target Support Files/Pods-tsukete-tsuketeUITests/Pods-tsukete-tsuketeUITests.release.xcconfig"; sourceTree = "<group>"; };
 		EEB8A502276E7E8A74897EA6 /* Pods-tsukete.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tsukete.release.xcconfig"; path = "Target Support Files/Pods-tsukete/Pods-tsukete.release.xcconfig"; sourceTree = "<group>"; };
 		F1F104BC3B25C91A93B0772D /* libPods-tsukete.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tsukete.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -231,13 +237,11 @@
 				947A1CF328D072510080ADCF /* RestaurantSmallView.swift */,
 				9430732F28D0C79C008C183C /* testCustomView.swift */,
 				9437612728D1A25F0061A1AF /* DetailCardVC.swift */,
-				9437612928D1A2E80061A1AF /* DetailCardVC.storyboard */,
+				9416638528D2D86400E614C8 /* DetailCardVC.storyboard */,
 				9437612B28D1CDA60061A1AF /* SeatTableViewCell.swift */,
-				9437612C28D1CDA60061A1AF /* SeatTableViewCell.xib */,
 				94B9A37928D1E3D000654450 /* LiveSeatsView.swift */,
-				94B9A37B28D1E3DC00654450 /* LiveSeatsView.xib */,
 				94B9A38128D1EEAB00654450 /* DetailListSeatsVC.swift */,
-				94B9A38228D1EEAB00654450 /* DetailListSeatsVC.xib */,
+				9416638328D2D7F400E614C8 /* DetailListSeatsVC.storyboard */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -257,6 +261,7 @@
 			isa = PBXGroup;
 			children = (
 				94A0ACD228CED98D003F0F95 /* OnboardingPageVC.swift */,
+				94E88AD128D2FAB20016A6A6 /* NetworkLayer.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -273,6 +278,8 @@
 				945731C328D1D03F0037C0B3 /* chair.png */,
 				945731C528D1D0450037C0B3 /* table.png */,
 				94B9A37D28D1E5CF00654450 /* seatsExample.png */,
+				94D715CA28D33636003332D9 /* concent.png */,
+				94D715CC28D3363C003332D9 /* noTabaco.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -286,6 +293,8 @@
 				94644DF328D061A6002E3C2C /* ProfileViewController.xib */,
 				947A1CF928D072F00080ADCF /* RestaurantSmallView.xib */,
 				94D18EC728D0E3CA00D5650E /* testCustomView.xib */,
+				9437612C28D1CDA60061A1AF /* SeatTableViewCell.xib */,
+				94B9A37B28D1E3DC00654450 /* LiveSeatsView.xib */,
 			);
 			path = Storyboard;
 			sourceTree = "<group>";
@@ -413,6 +422,7 @@
 				945731C628D1D0450037C0B3 /* table.png in Resources */,
 				94644DF528D061A6002E3C2C /* ProfileViewController.xib in Resources */,
 				9437613628D1CE750061A1AF /* explain4.png in Resources */,
+				94D715CD28D3363C003332D9 /* noTabaco.png in Resources */,
 				945731C428D1D03F0037C0B3 /* chair.png in Resources */,
 				9437613028D1CE630061A1AF /* explain2.png in Resources */,
 				9437613228D1CE680061A1AF /* explain3.png in Resources */,
@@ -420,13 +430,14 @@
 				94A0ACA228CED061003F0F95 /* LaunchScreen.storyboard in Resources */,
 				94A0ACCC28CED59F003F0F95 /* explain1.png in Resources */,
 				94A0AC9F28CED061003F0F95 /* Assets.xcassets in Resources */,
+				94D715CB28D33636003332D9 /* concent.png in Resources */,
 				94B9A37E28D1E5CF00654450 /* seatsExample.png in Resources */,
-				9437612A28D1A2E80061A1AF /* DetailCardVC.storyboard in Resources */,
 				947A1CFA28D072F00080ADCF /* RestaurantSmallView.xib in Resources */,
-				94B9A38428D1EEAB00654450 /* DetailListSeatsVC.xib in Resources */,
 				94A0ACD928CEF31C003F0F95 /* OnboardingItemVC.xib in Resources */,
 				9437613428D1CE6F0061A1AF /* explainBackground.png in Resources */,
 				9437612E28D1CDA60061A1AF /* SeatTableViewCell.xib in Resources */,
+				9416638628D2D86400E614C8 /* DetailCardVC.storyboard in Resources */,
+				9416638428D2D7F400E614C8 /* DetailListSeatsVC.storyboard in Resources */,
 				94A0AC9A28CED05E003F0F95 /* Main.storyboard in Resources */,
 				94B9A37C28D1E3DC00654450 /* LiveSeatsView.xib in Resources */,
 			);
@@ -556,6 +567,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94E88AD228D2FAB20016A6A6 /* NetworkLayer.swift in Sources */,
 				94B9A38328D1EEAB00654450 /* DetailListSeatsVC.swift in Sources */,
 				94A0AC9728CED05E003F0F95 /* ViewController.swift in Sources */,
 				94A0AC9D28CED05E003F0F95 /* tsukete.xcdatamodeld in Sources */,

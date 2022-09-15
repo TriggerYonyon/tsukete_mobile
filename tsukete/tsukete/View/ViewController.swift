@@ -13,21 +13,34 @@ import CoreLocation
 // 最初は、Onboarding View(アプリの説明)を表示させる
 // アプリの説明の確認の後、main page(google map)があるとこに画面遷移
 
+//protocol MainViewDelegate {
+//    func isAlreadyClicked(selected: isSelected)
+//}
+
 class ViewController: UIViewController {
-    
+//
+//    var delegate: MainViewDelegate?
     // 説明のviewを表示したかのbool 編数
     //⚠️永久的にこの値を保存したいなら、localにuserDefaultsを用いて記憶させるものがある
     var didShowOnboardingView = false
     var showLocationRequest = false
     var appearKeyboard = false
+    // お店の名前を検索でヒット
     var searchText = ""
+    // APIから戻ってきたnameとsearchTextをヒットさせ、その中の住所を持ってくる
+    var targetAddress = ""
+    // お店の名前をAPIから事前に登録
+    var restauName = ""
+    let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: 300, height: 0))
+    let geocoder = CLGeocoder()
     
     // Server API Model
     // リクエストしたお店かどうか
     var requestState = false
     // イメージがあるかどうか
     var imageData = [UIImage]()
-    var resultModel: PlaceModel?
+    var resultPlaceModel: [PlaceModel] = [PlaceModel]()
+    var networkLayer = NetworkLayer()
     
     @IBOutlet weak var cardView: testCustomView! {
         didSet {
@@ -38,9 +51,11 @@ class ViewController: UIViewController {
     private var mapView: GMSMapView!
     
 //    private var clusterManager: GMUClusterManager!
-    // 現在地を東京にcustom 設定
-    let defaultPositionLat = 35.681223
-    let defaultPositionLng = 139.767059
+    // ⚠️現在地を東京にcustom 設定
+    //35.681223
+    //139.767059
+    var defaultPositionLat: CLLocationDegrees = 35.681223
+    var defaultPositionLng: CLLocationDegrees = 139.767059
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,14 +71,113 @@ class ViewController: UIViewController {
         setCardConstraints()
         self.cardView.delegate = self
         dismissKeyboardByTap()
-        cardView.configure(state: requestState)
+        // ⚠️API modelからconfigureするつもり
+//        cardView.configure(state: requestState)
         cardViewGesture()
+        addKeyboardObserver()
+        requestRestaurantAPI()
+        requestGetImage()
     }
     
     // Memory Warning
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    
+    // MARK: 🔥検索した名前の位置を読み込む
+    func getLocation() {
+        
+    }
+    
+    // Image写真の処理
+    // ⚠️今回は、imageは使わないことにした
+    func loadImage(urlString: String, completion: @escaping (UIImage?) -> Void ) {
+        networkLayer.request(type: .justURL(urlString: urlString)) { data, response, error in
+            if let hasData = data {
+                completion(UIImage(data: hasData))
+                return
+            }
+            completion(nil)
+        }
+    }
+    
+    func requestRestaurantAPI() {
+        //Query Stringを使って、target要素を指定
+        // 今回は Queryなしで
+        // shopsだけで必要な情報は読み込める
+        let url = "http://localhost:8080/api/shops"
+        
+        networkLayer.request(type: .justURL(urlString: url)) { data, response, error in
+            if let hasData = data {
+                
+                do {
+                    self.resultPlaceModel = try JSONDecoder().decode([PlaceModel].self, from: hasData)
+                    
+                    // requestAPIから事前に登録
+                    self.restauName = self.resultPlaceModel.first?.name ?? ""
+                    print(self.restauName)
+                    self.getAddressString()
+                    
+                    DispatchQueue.main.async {
+                        // CardViewの情報をModelの情報に変更
+                        self.cardView.configure(with: self.resultPlaceModel)
+                    }
+                    
+                } catch {
+                    print(error)
+                }
+            }
+        }
+    }
+    
+    func requestGetImage() {
+        let imageUrl1 = "http://drive.google.com/uc?export=view&id=1EV5zj7Rz5HG8uUWCvEb8lxehlDPfrACM"
+        let imageUrl2 = "http://drive.google.com/uc?export=view&id=1OXit8NrEDtTKea7rxkFN286J7bX20X0K"
+        let imageUrl3 = "http://drive.google.com/uc?export=view&id=1q8ORuIudXwedg-DJ8wfHp3fp3yVLUgcF"
+        
+        // ⚠️配列でやろうとしたが、できなかった
+        self.loadImage(urlString: imageUrl1) { image in
+            DispatchQueue.main.async {
+                self.cardView.image1.image = image
+            }
+        }
+        
+        self.loadImage(urlString: imageUrl2) { image in
+            DispatchQueue.main.async {
+                self.cardView.image2.image = image
+            }
+        }
+        
+        self.loadImage(urlString: imageUrl3) { image in
+            DispatchQueue.main.async {
+                self.cardView.image3.image = image
+            }
+        }
+    }
+    
+    func getAddressString() {
+        if let hasData = resultPlaceModel.first {
+            targetAddress += hasData.prefecture ?? ""
+            targetAddress += hasData.locality ?? ""
+            targetAddress += hasData.street ?? ""
+            targetAddress += hasData.building ?? ""
+            print(targetAddress)
+        } else {
+            return
+        }
+    }
+    
+    // ⚠️search button押したら、nameがmatchするかを確認
+    // そのあと、targetAddressでgeocodingして、mapにmarker 表示
+    func isMatchedName() -> Bool {
+        if searchText == restauName {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    // table Viewは、resultPlaceModel[indexPath.row]みたいにやる
     
     private func navigateConfigure() {
         // No title of Navigation Title
@@ -86,7 +200,6 @@ class ViewController: UIViewController {
     private func searchBarConfigure() {
         // NavigationItem に UISearchBar入れて作る
         
-        let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: 300, height: 0))
         searchBar.placeholder = "店舗検索"
         // 左のSearch Image
         searchBar.setImage(UIImage(named: "icSearchNonW"), for: UISearchBar.Icon.search, state: .normal)
@@ -98,35 +211,21 @@ class ViewController: UIViewController {
         self.navigationItem.rightBarButtonItems = [profileButtonItem, searchBarButtonItem]
         
         searchBar.delegate = self
+        // cancel Buttonを表す
+        searchBar.showsCancelButton = false
+//        searchBar.showsSearchResultsButton = true
     }
     
     @objc func moveToProfilePage(_ sender: UIBarButtonItem) {
         let profileVC = ProfileViewController(nibName: "ProfileViewController", bundle: nil)
-        self.navigationController?.pushViewController(profileVC, animated: true)
         
-        print("mainPage -> profilePage")
-    }
-    
-    private func mapTapGesture() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissCardView))
-        let tapDismissGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        
-        // 2. add the gesture recognizer to a view
-        mapView.addGestureRecognizer(tapGesture)
-        mapView.addGestureRecognizer(tapDismissGesture)
-    }
-    
-    @objc func dismissCardView() {
-        if cardView.isHidden == false {
-            cardView.isHidden = true
-        } else {
-            return
+        if appearKeyboard {
+            searchBar.endEditing(true)
+            appearKeyboard = false
         }
-    }
-    
-    @objc func dismissKeyboard() {
         
-        print("1")
+        self.navigationController?.pushViewController(profileVC, animated: true)
+        print("mainPage -> profilePage")
     }
     
     private func cardViewGesture() {
@@ -139,10 +238,10 @@ class ViewController: UIViewController {
             return
         }
         
-//        detailVC.modalTransitionStyle = .coverVertical
-        
-//        // CoverVerticalのモード
+        // dataをdetailVCに渡す
+        detailVC.seatsModelByPlace = resultPlaceModel
         detailVC.restaurantTitle = cardView.restaurantName.text!
+        // CoverVerticalのモード
         detailVC.modalTransitionStyle = .coverVertical
         self.present(detailVC, animated: true, completion: nil)
     }
@@ -173,18 +272,13 @@ class ViewController: UIViewController {
         guard appearKeyboard == false else {
             return
         }
-        
-        let notiInfo = noti.userInfo!
-        //keyboardが現れる時間を指定
-        let animationDuration = notiInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! TimeInterval
-                
         appearKeyboard = true
-        UIView.animate(withDuration: animationDuration) {
-            if !self.cardView.isHidden {
-                self.cardView.isHidden = true
-            }
-            self.view.layoutIfNeeded()
+        print(appearKeyboard)
+        
+        if !self.cardView.isHidden {
+            self.cardView.isHidden = true
         }
+        
     }
     
     @objc func keyboardWillHide(noti: Notification) {
@@ -192,6 +286,9 @@ class ViewController: UIViewController {
             return
         }
         
+        appearKeyboard = false
+        
+        print(appearKeyboard)
     }
     
     private func markerConfigure() {
@@ -199,14 +296,13 @@ class ViewController: UIViewController {
         let marker = GMSMarker(position: position)
         marker.title = "Tokyo"
         // markerの色変更
-        marker.icon = GMSMarker.markerImage(with: .systemBlue.withAlphaComponent(1))
+        marker.icon = GMSMarker.markerImage(with: .orange.withAlphaComponent(0.5))
         marker.map = mapView
         marker.appearAnimation = .pop
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         
     }
     
@@ -234,6 +330,12 @@ extension ViewController: GMSMapViewDelegate {
     // Map ViewをTapすることによるEvent
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
         // Keyboardを下ろす
+        if appearKeyboard {
+            print("keyboard is appearing")
+            // searchBar の入力によるkeyboardが現れたら、下ろす
+            searchBar.endEditing(true)
+            appearKeyboard = false
+        }
         
         
         if cardView.isHidden == false {
@@ -255,17 +357,23 @@ extension ViewController: GMSMapViewDelegate {
     }
 }
 
-// Google Place API 場所検索でお店をヒットするつもり
+// MARK: SearchBar 関連
+// ⚠️Google Place API 場所検索でお店をヒットするつもり
 extension ViewController: UISearchBarDelegate, UISearchResultsUpdating {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let hasText = searchBar.text else {
             return
         }
+        print("search")
         
         searchText = hasText
-        // ⚠️API Server からmodel dataを読み込むつもり
+        if isMatchedName() {
+            print("true: \(restauName)")
+            // MARK: 🔥 searchして、ヒットしたらGeoCodingを行う
+            
+        }
         
-        self.view.endEditing(true)
+        print(searchText)
     }
     
     func updateSearchResults(for searchController: UISearchController) {
@@ -274,6 +382,37 @@ extension ViewController: UISearchBarDelegate, UISearchResultsUpdating {
         }
         print(hasText)
     }
+    
+
+    
+    // search bar touch後、入力を始めたときに呼び出されるメソッド
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        if !searchBar.showsCancelButton {
+            searchBar.showsCancelButton = true
+        }
+        
+        print("search Start!")
+    }
+    
+    // cancel button click時に呼び出されるメソッド
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        if searchBar.showsCancelButton {
+            searchBar.showsCancelButton = false
+        }
+        
+        searchBar.endEditing(true)
+    }
+    
+    // 検索入力値が編集されるたびに呼び出されるメソッド
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard let hasText = searchBar.text else {
+            return
+        }
+        
+        print(hasText)
+        print(searchText)
+    }
+    
 }
 
 extension ViewController: cardViewDelegate {
@@ -294,6 +433,8 @@ extension ViewController: cardViewDelegate {
             cardView.hartButton.layer.add(cardView.bounceAnimation, forKey: nil)
             print("selected -> normal")
         }
+        
+        // DetailCardVCにも渡すためのlogicを追加
     }
 }
 

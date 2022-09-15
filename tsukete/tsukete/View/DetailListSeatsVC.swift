@@ -9,7 +9,10 @@ import UIKit
 
 class DetailListSeatsVC: UIViewController {
     
-    var seatsResult: SeatsResult?
+    var seatsInfo: SeatsInfo?
+    
+    @IBOutlet weak var restaurantLabel: UILabel!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
