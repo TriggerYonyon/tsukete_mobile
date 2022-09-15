@@ -39,8 +39,12 @@ class testCustomView: UIView {
             setHartButton()
         }
     }
-    
-    @IBOutlet weak var restaurantName: UILabel!
+    @IBOutlet weak var openCloseStackView: UIStackView!
+    @IBOutlet weak var restaurantName: UILabel! {
+        didSet {
+            restaurantName.font = .systemFont(ofSize: 20, weight: .bold)
+        }
+    }
     @IBOutlet weak var openTime: UILabel!
     @IBOutlet weak var closeTime: UILabel!
     @IBOutlet weak var vacancyState: UILabel!
@@ -101,8 +105,8 @@ class testCustomView: UIView {
         hartButton.tintColor = .systemRed
     }
     
-    // with model: PlaceModel
-    public func configure(state requestState: Bool) {
+    // with model: PlaceModel (request関連)
+    public func requestConfigure(state requestState: Bool) {
 //        if !model.isEmpty {
 //            // Imageを3つに絞る
 //            // ⚠️途中の段階:Image URL処理をまだ
@@ -132,6 +136,61 @@ class testCustomView: UIView {
             requestButton.isHidden = true
         }
     }
+    
+    public func configure(with model: [PlaceModel]) {
+        // model の情報がなかったら
+        if model.isEmpty {
+            image1.image = UIImage(systemName: "photo")?.withTintColor(.lightGray)
+            image2.image = UIImage(systemName: "photo")?.withTintColor(.lightGray)
+            image3.image = UIImage(systemName: "photo")?.withTintColor(.lightGray)
+            restaurantName.text = "情報なし"
+            openTime.text = "情報なし"
+            closeTime.text = "情報なし"
+            vacancyState.text = "情報なし"
+            vacancyState.textColor = .lightGray
+            vacancyState.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+            requestButton.setTitle("情報なし", for: .normal)
+            requestButton.backgroundColor = .lightGray
+        } else {
+            let vacantSeatsArray = model.first?.seats
+            var noVacancy = false
+            
+//            image1.image = UIImage(systemName: "photo")?.withTintColor(.lightGray)
+//            image2.image = UIImage(systemName: "photo")?.withTintColor(.lightGray)
+//            image3.image = UIImage(systemName: "photo")?.withTintColor(.lightGray)
+            restaurantName.text = model.first?.name ?? ""
+            openTime.text = "Open: 10:00AM"
+            closeTime.text = "Close: 20:00PM"
+            
+            for i in 0..<(vacantSeatsArray?.count ?? 0)  {
+                if let hasVacant = vacantSeatsArray?[i].isUsed {
+                    vacancyState.text = "満席"
+                    vacancyState.textColor = .red.withAlphaComponent(0.7)
+                    vacancyState.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+                    noVacancy = hasVacant
+                    break
+                }
+            }
+            
+            if !noVacancy {
+                vacancyState.text = "空席あり"
+                vacancyState.textColor = .lightGray
+                vacancyState.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+                vacancyState.textColor = UIColor(rgb: 0x06B32A)
+                vacancyState.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+            }
+            
+//            vacancyState.text = "空席あり"
+//            vacancyState.textColor = .lightGray
+//            vacancyState.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+//            vacancyState.textColor = UIColor(rgb: 0x06B32A)
+//            vacancyState.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+        }
+    }
+    
+    
+    
+    
     
     @IBAction func requestButtonTapped(_ sender: Any) {
         self.delegate?.requestButtonEvent()

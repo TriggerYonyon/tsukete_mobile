@@ -19,38 +19,38 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ddn-3Z-LXa">
-                        <rect key="frame" x="15" y="30" width="30" height="30"/>
+                        <rect key="frame" x="15" y="25" width="20" height="20"/>
                         <color key="backgroundColor" systemColor="systemBlueColor"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="30" id="DYV-7Y-rfO"/>
-                            <constraint firstAttribute="height" constant="30" id="Fqn-16-eK5"/>
+                            <constraint firstAttribute="width" constant="20" id="DYV-7Y-rfO"/>
+                            <constraint firstAttribute="height" constant="20" id="Fqn-16-eK5"/>
                         </constraints>
                     </view>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dBv-zt-1Uq">
-                        <rect key="frame" x="65" y="15" width="60" height="60"/>
+                        <rect key="frame" x="55" y="15" width="40" height="40"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="60" id="MSm-t1-3OS"/>
-                            <constraint firstAttribute="width" constant="60" id="iHE-dA-dcK"/>
+                            <constraint firstAttribute="height" constant="40" id="MSm-t1-3OS"/>
+                            <constraint firstAttribute="width" constant="40" id="iHE-dA-dcK"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bus-os-fsg">
-                        <rect key="frame" x="145" y="34.666666666666664" width="116" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="人数" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bus-os-fsg">
+                        <rect key="frame" x="115" y="27.333333333333332" width="186" height="15.666666666666668"/>
+                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gnE-On-Tsb">
-                        <rect key="frame" x="301" y="15" width="60" height="60"/>
+                        <rect key="frame" x="341" y="15" width="40" height="40"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="60" id="6PQ-w4-fu9"/>
-                            <constraint firstAttribute="width" constant="60" id="uff-6G-7rw"/>
+                            <constraint firstAttribute="height" constant="40" id="6PQ-w4-fu9"/>
+                            <constraint firstAttribute="width" constant="40" id="uff-6G-7rw"/>
                         </constraints>
                     </imageView>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HbW-FN-uek">
-                        <rect key="frame" x="381" y="15" width="60" height="60"/>
+                        <rect key="frame" x="401" y="15" width="40" height="40"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="60" id="1Ud-AA-Yov"/>
-                            <constraint firstAttribute="width" constant="60" id="cXz-ml-0K3"/>
+                            <constraint firstAttribute="height" constant="40" id="1Ud-AA-Yov"/>
+                            <constraint firstAttribute="width" constant="40" id="cXz-ml-0K3"/>
                         </constraints>
                     </imageView>
                 </subviews>
