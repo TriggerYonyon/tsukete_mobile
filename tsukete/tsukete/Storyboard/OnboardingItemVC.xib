@@ -30,19 +30,19 @@
                     </constraints>
                 </imageView>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="explain1.png" translatesAutoresizingMaskIntoConstraints="NO" id="aQB-cc-0lw">
-                    <rect key="frame" x="0.0" y="179" width="414" height="250"/>
+                    <rect key="frame" x="0.0" y="189" width="414" height="250"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="250" id="XKA-Zs-ws3"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l4E-Qb-0AQ">
-                    <rect key="frame" x="50" y="474" width="314" height="20.5"/>
+                    <rect key="frame" x="50" y="484" width="314" height="20.5"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xp1-B3-wrH">
-                    <rect key="frame" x="20" y="128" width="374" height="21"/>
+                    <rect key="frame" x="20" y="138" width="374" height="21"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -56,7 +56,7 @@
                 <constraint firstAttribute="trailing" secondItem="R6H-QV-Ohm" secondAttribute="trailing" constant="90" id="Dck-xa-Ae0"/>
                 <constraint firstItem="aQB-cc-0lw" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Gub-3v-esH"/>
                 <constraint firstItem="Xp1-B3-wrH" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="ItQ-Ql-DdM"/>
-                <constraint firstItem="Xp1-B3-wrH" firstAttribute="top" secondItem="R6H-QV-Ohm" secondAttribute="bottom" constant="15" id="JrR-a4-CNz"/>
+                <constraint firstItem="Xp1-B3-wrH" firstAttribute="top" secondItem="R6H-QV-Ohm" secondAttribute="bottom" constant="25" id="JrR-a4-CNz"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Xp1-B3-wrH" secondAttribute="trailing" constant="20" id="SR7-1m-Djn"/>
                 <constraint firstItem="l4E-Qb-0AQ" firstAttribute="top" secondItem="aQB-cc-0lw" secondAttribute="bottom" constant="45" id="SnY-n1-tgj"/>
                 <constraint firstItem="aQB-cc-0lw" firstAttribute="top" secondItem="Xp1-B3-wrH" secondAttribute="bottom" constant="30" id="XXn-hh-Nsv"/>

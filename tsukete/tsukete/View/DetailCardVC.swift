@@ -81,6 +81,8 @@ class DetailCardVC: UIViewController {
         setScrollView()
         self.view.sendSubviewToBack(scrollView)
         
+        setImage()
+        
         setCardConstraints()
         setSegmentConstraints()
         self.view.addSubview(liveSeatsView)
@@ -108,6 +110,12 @@ class DetailCardVC: UIViewController {
             checkOnlyVacantSeat.tintColor = .lightGray
             checkType = .notChecked
         }
+    }
+    
+    func setImage() {
+        restaurantDetailView.image1.image = image1
+        restaurantDetailView.image2.image = image2
+        restaurantDetailView.image3.image = image3
     }
     
     // detail Viewをconfigure

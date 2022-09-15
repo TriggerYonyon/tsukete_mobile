@@ -58,15 +58,22 @@ class ViewController: UIViewController {
     // ⚠️現在地を東京にcustom 設定
     //35.681223
     //139.767059
-    // 初期値設定
+    // 初期値設定 (検索による初期値設定)
     var searchPositionLat: CLLocationDegrees = 35.681223
     var searchPositionLng: CLLocationDegrees = 139.767059
+    
+    // 最初から指定しちゃう設定
+    var defaultPositionLat = 35.662737
+    var defaultPositionLng = 139.70899
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigateConfigure()
         searchBarConfigure()
         mapConfigure()
+        // MARK: setInitMarker: ❗️CHANGE 指定してからmarkerを設定
+        // -> 今後requestしたお店だけ表示されるように変更予定
+        setInitMarker()
 //        markerConfigure()
         mapView.delegate = self
         self.view.addSubview(mapView)
@@ -81,6 +88,7 @@ class ViewController: UIViewController {
         cardViewGesture()
         addKeyboardObserver()
         requestRestaurantAPI()
+    
         requestGetImage()
     }
     
@@ -439,6 +447,20 @@ extension ViewController: UISearchBarDelegate, UISearchResultsUpdating {
             return
         }
         print(hasText)
+    }
+    
+    // 最初のmarker設定
+    func setInitMarker() {
+        let locate = CLLocationCoordinate2D(latitude: defaultPositionLat, longitude: defaultPositionLng)
+        marker.position = locate
+        marker.title = markerTitle
+        // markerの色変更
+        marker.icon = GMSMarker.markerImage(with: .orange.withAlphaComponent(0.3))
+        
+        DispatchQueue.main.async {
+            self.marker.map = self.mapView
+            self.marker.appearAnimation = .pop
+        }
     }
     
 

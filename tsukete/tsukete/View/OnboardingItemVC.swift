@@ -23,13 +23,13 @@ class OnboardingItemVC: UIViewController {
     
     @IBOutlet private weak var mainTitleLabel: UILabel! {
         didSet {
-            mainTitleLabel.font = .systemFont(ofSize: 20, weight: .medium)
+            mainTitleLabel.font = .systemFont(ofSize: 17, weight: .medium)
         }
     }
     
     @IBOutlet weak var explainLabel: UILabel! {
         didSet {
-            explainLabel.font = .systemFont(ofSize: 25, weight: .bold)
+            explainLabel.font = .systemFont(ofSize: 20, weight: .bold)
         }
     }
     
