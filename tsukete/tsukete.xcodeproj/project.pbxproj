@@ -21,6 +21,7 @@
 		9437613628D1CE750061A1AF /* explain4.png in Resources */ = {isa = PBXBuildFile; fileRef = 9437613528D1CE750061A1AF /* explain4.png */; };
 		944CBF1528D174EF008EB159 /* FontModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944CBF1428D174EF008EB159 /* FontModel.swift */; };
 		944CBF1928D176EB008EB159 /* serverPlaceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944CBF1828D176EB008EB159 /* serverPlaceModel.swift */; };
+		9453D13728D3866A0098FC66 /* newExplain1.png in Resources */ = {isa = PBXBuildFile; fileRef = 9453D13628D3866A0098FC66 /* newExplain1.png */; };
 		945731C428D1D03F0037C0B3 /* chair.png in Resources */ = {isa = PBXBuildFile; fileRef = 945731C328D1D03F0037C0B3 /* chair.png */; };
 		945731C628D1D0450037C0B3 /* table.png in Resources */ = {isa = PBXBuildFile; fileRef = 945731C528D1D0450037C0B3 /* table.png */; };
 		94644DF428D061A6002E3C2C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94644DF228D061A6002E3C2C /* ProfileViewController.swift */; };
@@ -39,7 +40,6 @@
 		94A0ACB728CED061003F0F95 /* tsuketeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A0ACB628CED061003F0F95 /* tsuketeUITests.swift */; };
 		94A0ACB928CED061003F0F95 /* tsuketeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A0ACB828CED061003F0F95 /* tsuketeUITestsLaunchTests.swift */; };
 		94A0ACCA28CED3C8003F0F95 /* tsuketeLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 94A0ACC928CED3C8003F0F95 /* tsuketeLogo.png */; };
-		94A0ACCC28CED59F003F0F95 /* explain1.png in Resources */ = {isa = PBXBuildFile; fileRef = 94A0ACCB28CED59F003F0F95 /* explain1.png */; };
 		94A0ACD428CED98D003F0F95 /* OnboardingPageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A0ACD228CED98D003F0F95 /* OnboardingPageVC.swift */; };
 		94A0ACD828CEF31C003F0F95 /* OnboardingItemVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94A0ACD628CEF31C003F0F95 /* OnboardingItemVC.swift */; };
 		94A0ACD928CEF31C003F0F95 /* OnboardingItemVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 94A0ACD728CEF31C003F0F95 /* OnboardingItemVC.xib */; };
@@ -90,6 +90,7 @@
 		9437613528D1CE750061A1AF /* explain4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explain4.png; sourceTree = "<group>"; };
 		944CBF1428D174EF008EB159 /* FontModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontModel.swift; sourceTree = "<group>"; };
 		944CBF1828D176EB008EB159 /* serverPlaceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = serverPlaceModel.swift; sourceTree = "<group>"; };
+		9453D13628D3866A0098FC66 /* newExplain1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newExplain1.png; sourceTree = "<group>"; };
 		945731C328D1D03F0037C0B3 /* chair.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chair.png; sourceTree = "<group>"; };
 		945731C528D1D0450037C0B3 /* table.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = table.png; sourceTree = "<group>"; };
 		94644DF228D061A6002E3C2C /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -112,7 +113,6 @@
 		94A0ACB628CED061003F0F95 /* tsuketeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tsuketeUITests.swift; sourceTree = "<group>"; };
 		94A0ACB828CED061003F0F95 /* tsuketeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tsuketeUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		94A0ACC928CED3C8003F0F95 /* tsuketeLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tsuketeLogo.png; sourceTree = "<group>"; };
-		94A0ACCB28CED59F003F0F95 /* explain1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = explain1.png; sourceTree = "<group>"; };
 		94A0ACD228CED98D003F0F95 /* OnboardingPageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageVC.swift; sourceTree = "<group>"; };
 		94A0ACD628CEF31C003F0F95 /* OnboardingItemVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingItemVC.swift; sourceTree = "<group>"; };
 		94A0ACD728CEF31C003F0F95 /* OnboardingItemVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OnboardingItemVC.xib; sourceTree = "<group>"; };
@@ -271,7 +271,7 @@
 			children = (
 				94A0ACC928CED3C8003F0F95 /* tsuketeLogo.png */,
 				9437613328D1CE6F0061A1AF /* explainBackground.png */,
-				94A0ACCB28CED59F003F0F95 /* explain1.png */,
+				9453D13628D3866A0098FC66 /* newExplain1.png */,
 				9437612F28D1CE630061A1AF /* explain2.png */,
 				9437613128D1CE680061A1AF /* explain3.png */,
 				9437613528D1CE750061A1AF /* explain4.png */,
@@ -428,9 +428,9 @@
 				9437613228D1CE680061A1AF /* explain3.png in Resources */,
 				94A0ACCA28CED3C8003F0F95 /* tsuketeLogo.png in Resources */,
 				94A0ACA228CED061003F0F95 /* LaunchScreen.storyboard in Resources */,
-				94A0ACCC28CED59F003F0F95 /* explain1.png in Resources */,
 				94A0AC9F28CED061003F0F95 /* Assets.xcassets in Resources */,
 				94D715CB28D33636003332D9 /* concent.png in Resources */,
+				9453D13728D3866A0098FC66 /* newExplain1.png in Resources */,
 				94B9A37E28D1E5CF00654450 /* seatsExample.png in Resources */,
 				947A1CFA28D072F00080ADCF /* RestaurantSmallView.xib in Resources */,
 				94A0ACD928CEF31C003F0F95 /* OnboardingItemVC.xib in Resources */,

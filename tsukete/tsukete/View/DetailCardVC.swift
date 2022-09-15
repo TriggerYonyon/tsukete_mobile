@@ -24,6 +24,9 @@ class DetailCardVC: UIViewController {
     var checkType = CheckType.notChecked
     let liveSeatsView = LiveSeatsView(frame: .zero)
     let seatTableView: UITableView! = UITableView()
+    var image1 = UIImage()
+    var image2 = UIImage()
+    var image3 = UIImage()
     
     // seats Model
     var seatsModelByPlace: [PlaceModel] = [PlaceModel]()
@@ -182,8 +185,8 @@ class DetailCardVC: UIViewController {
     
     private func setCardConstraints() {
         restaurantDetailView.translatesAutoresizingMaskIntoConstraints = false
-        restaurantDetailView.heightAnchor.constraint(equalToConstant: 180).isActive = true
-        restaurantDetailView.imageStackview.heightAnchor.constraint(equalToConstant: 0).isActive = true
+        restaurantDetailView.heightAnchor.constraint(equalToConstant: 250).isActive = true
+//        restaurantDetailView.imageStackview.heightAnchor.constraint(equalToConstant: 0).isActive = true
         restaurantDetailView.requestButton.isHidden = true
         restaurantDetailView.requestButton.heightAnchor.constraint(equalToConstant: 0).isActive = true
         

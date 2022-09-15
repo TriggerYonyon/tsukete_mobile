@@ -13,6 +13,12 @@ class OnboardingItemVC: UIViewController {
     var mainText = ""
     var topImage: UIImage? = UIImage()
     
+    @IBOutlet weak var logoImageView: UIImageView! {
+        didSet {
+            self.logoImageView.image = UIImage(named: "tsuketeLogo")
+        }
+    }
+    
     @IBOutlet private weak var topImageView: UIImageView!
     
     @IBOutlet private weak var mainTitleLabel: UILabel! {
