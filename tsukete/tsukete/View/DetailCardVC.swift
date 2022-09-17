@@ -24,6 +24,7 @@ class DetailCardVC: UIViewController {
     var checkType = CheckType.notChecked
     let liveSeatsView = LiveSeatsView(frame: .zero)
     let seatTableView: UITableView! = UITableView()
+    
     var image1 = UIImage()
     var image2 = UIImage()
     var image3 = UIImage()
@@ -90,6 +91,7 @@ class DetailCardVC: UIViewController {
         setViewDataConfigure()
         
         self.view.addSubview(seatTableView)
+        seatTableView.isScrollEnabled = false
         setTableViewConstraints()
         seatTableView.delegate = self
         seatTableView.dataSource = self
@@ -193,12 +195,12 @@ class DetailCardVC: UIViewController {
     
     private func setCardConstraints() {
         restaurantDetailView.translatesAutoresizingMaskIntoConstraints = false
+        
+        restaurantDetailView.topAnchor.constraint(equalTo: restaurantLabel.bottomAnchor, constant: 30).isActive = true
         restaurantDetailView.heightAnchor.constraint(equalToConstant: 250).isActive = true
 //        restaurantDetailView.imageStackview.heightAnchor.constraint(equalToConstant: 0).isActive = true
         restaurantDetailView.requestButton.isHidden = true
         restaurantDetailView.requestButton.heightAnchor.constraint(equalToConstant: 0).isActive = true
-        
-        restaurantDetailView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 70).isActive = true
         restaurantDetailView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         restaurantDetailView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 35).isActive = true
         restaurantDetailView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -35).isActive = true
@@ -305,6 +307,7 @@ extension DetailCardVC: UITableViewDelegate, UITableViewDataSource {
         let detailSeatsVC = UIStoryboard(name: "DetailListSeatsVC", bundle: nil).instantiateViewController(withIdentifier: "DetailListSeatsVC") as! DetailListSeatsVC
         tableView.deselectRow(at: indexPath, animated: true)
         detailSeatsVC.seatsInfo = self.seatsModelByPlace[0].seats[indexPath.row]
+        detailSeatsVC.modalPresentationStyle = .fullScreen
         self.present(detailSeatsVC, animated: true, completion: nil)
     }
     

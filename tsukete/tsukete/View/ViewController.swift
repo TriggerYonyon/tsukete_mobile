@@ -329,8 +329,8 @@ class ViewController: UIViewController {
         }
         
         detailVC.restaurantTitle = cardView.restaurantName.text!
-        // CoverVerticalのモード
-        detailVC.modalTransitionStyle = .coverVertical
+        
+        detailVC.modalPresentationStyle = .fullScreen
         self.present(detailVC, animated: true, completion: nil)
     }
     
