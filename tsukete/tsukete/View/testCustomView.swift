@@ -88,6 +88,7 @@ class testCustomView: UIView {
         requestButton.layer.cornerRadius = 15
         requestButton.backgroundColor = UIColor(rgb: 0xFFBC42)
         requestButton.setTitle("¥ 設置リクエスト", for: .normal)
+        requestButton.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         requestButton.setTitleColor(.black, for: .normal)
     }
     
@@ -174,10 +175,8 @@ class testCustomView: UIView {
             
             if !noVacancy {
                 vacancyState.text = "空席あり"
-                vacancyState.textColor = .lightGray
                 vacancyState.font = UIFont.systemFont(ofSize: 15, weight: .medium)
                 vacancyState.textColor = UIColor(rgb: 0x06B32A)
-                vacancyState.font = UIFont.systemFont(ofSize: 15, weight: .medium)
             }
             
 //            vacancyState.text = "空席あり"

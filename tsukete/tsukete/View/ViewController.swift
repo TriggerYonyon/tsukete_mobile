@@ -45,6 +45,8 @@ class ViewController: UIViewController {
     var imageData = [UIImage]()
     var resultPlaceModel: [PlaceModel] = [PlaceModel]()
     var networkLayer = NetworkLayer()
+    // お店の名前: [お気に入りリストに入れたか、 リクエストしたか]のDictionary
+    var checkStatePlaceDict = [String: [Bool]]()
     
     @IBOutlet weak var cardView: testCustomView! {
         didSet {
@@ -117,6 +119,9 @@ class ViewController: UIViewController {
             //位置修正を行なったため、mapとmarkerを移動させる
             self.mapCameraUpdate()
             self.markerConfigure(newLocate: CLLocationCoordinate2D(latitude: self.searchPositionLat, longitude: self.searchPositionLng))
+            if self.cardView.isHidden {
+                self.cardView.isHidden = true
+            }
             
         }
         
@@ -142,7 +147,10 @@ class ViewController: UIViewController {
         //Query Stringを使って、target要素を指定
         // 今回は Queryなしで
         // shopsだけで必要な情報は読み込める
-        let url = "http://localhost:8080/api/shops"
+        // localの方
+//        let url = "http://localhost:8080/api/shops"
+        // deployしたserverの方
+        let url = "http://54.199.251.178:8080/api/shops"
         
         networkLayer.request(type: .justURL(urlString: url)) { data, response, error in
             if let hasData = data {
@@ -158,6 +166,14 @@ class ViewController: UIViewController {
                     DispatchQueue.main.async {
                         // CardViewの情報をModelの情報に変更
                         self.cardView.configure(with: self.resultPlaceModel)
+                        // お気に入りリストに入れたか、リクエストしたかは、core Dataに保存しておく
+                        if self.checkStatePlaceDict[self.restauName] != nil {
+                            // 初めて検査した場所であれば、false  falseにしておく
+                            self.checkStatePlaceDict[self.restauName] = [false, false]
+                        } else {
+                            
+                        }
+                        // すでに検索を行い、bool typeが入っていれば処理なし
                     }
                     
                 } catch {
@@ -225,6 +241,21 @@ class ViewController: UIViewController {
         
     }
     
+    // 最初からマップのカメラ設定
+    private func setInitMapConfigure() {
+        let camera:GMSCameraPosition = GMSCameraPosition.camera(withLatitude: defaultPositionLat, longitude: defaultPositionLng, zoom: 11)
+        mapView = GMSMapView(frame: self.view.bounds, camera: camera)
+        mapView.settings.scrollGestures = true
+        mapView.settings.zoomGestures = true
+        
+//        if !mapView.settings.myLocationButton {
+//
+//        }
+        mapView.settings.myLocationButton = true
+        mapView.isMyLocationEnabled = true
+    }
+    
+    // ⚠️検索による位置設定
     private func mapConfigure() {
         let camera:GMSCameraPosition = GMSCameraPosition.camera(withLatitude: searchPositionLat, longitude: searchPositionLng, zoom: 11)
         mapView = GMSMapView(frame: self.view.bounds, camera: camera)
@@ -257,6 +288,7 @@ class ViewController: UIViewController {
         
         searchBar.delegate = self
         // cancel Buttonを表す
+        // ⚠️ Cancel ボタンのdispalyをもっと自然なアニメーションに変更するつもり
         searchBar.showsCancelButton = false
 //        searchBar.showsSearchResultsButton = true
     }
@@ -308,7 +340,6 @@ class ViewController: UIViewController {
     
     private func setCardConstraints() {
         cardView.translatesAutoresizingMaskIntoConstraints = false
-
         cardView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -30).isActive = true
         cardView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         cardView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 30).isActive = true
@@ -357,6 +388,26 @@ class ViewController: UIViewController {
         DispatchQueue.main.async {
             self.marker.map = self.mapView
             self.marker.appearAnimation = .pop
+        }
+    }
+    
+    private func setRequestButtonState() {
+        if restauName != "" {
+            if let hasDict = checkStatePlaceDict[self.restauName] {
+                cardView.translatesAutoresizingMaskIntoConstraints  = false
+                
+                if hasDict[1] {
+                    // すでにrequestされたものであれば
+                    // heightを0にしてから、topAnchorを調整 -> 無駄なspaceを減らす
+                    cardView.requestButton.heightAnchor.constraint(equalToConstant: 0).isActive = true
+                    cardView.requestButton.topAnchor.constraint(equalTo: cardView.vacancyState.bottomAnchor, constant: 0).isActive = true
+                } else {
+                    // まだ、requestされていない場合の処理
+                }
+            }
+            
+            
+            
         }
     }
     
@@ -495,10 +546,28 @@ extension ViewController: UISearchBarDelegate, UISearchResultsUpdating {
     
 }
 
+// card View関連delegate
 extension ViewController: cardViewDelegate {
     func requestButtonEvent() {
-        print("mainPage -> RequestPage")
+        print("mainPage -> RequestPopVC")
         print("button tapped!")
+        // popup viewを出す
+        // as castingをしないと、該当のpropertyにアクセス不可
+        let requestPopVC = UIStoryboard(name: "RequestPopupVC", bundle: nil).instantiateViewController(withIdentifier: "RequestPopupVC") as! RequestPopupVC
+        requestPopVC.modalPresentationStyle = .overCurrentContext
+        requestPopVC.modalTransitionStyle = .crossDissolve
+        self.present(requestPopVC, animated: true) {
+            // 設定した時間後、処理を行う
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                if requestPopVC.presentViewState {
+                    self.dismiss(animated: true) {
+                        // ここで、request thank you Pageを表示したあと、設置リクエストボタンの設定を帰る
+                        print("request Okay!")
+                    }
+                }
+            }
+        }
+        
     }
     
     func hartButtonEvent() {
@@ -513,8 +582,6 @@ extension ViewController: cardViewDelegate {
             cardView.hartButton.layer.add(cardView.bounceAnimation, forKey: nil)
             print("selected -> normal")
         }
-        
-        // DetailCardVCにも渡すためのlogicを追加
     }
 }
 

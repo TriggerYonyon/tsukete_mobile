@@ -223,10 +223,6 @@ class DetailCardVC: UIViewController {
 }
 
 extension DetailCardVC: cardViewDelegate {
-//    func isAlreadyClicked(selected: isSelected) {
-//        restaurantDetailView.hartButtonState = selected
-//    }
-    
     func requestButtonEvent() {
         print("DetaialCardPage -> RequestPage")
         print("button tapped!")
