@@ -45,12 +45,25 @@ class testCustomView: UIView {
             restaurantName.font = .systemFont(ofSize: 20, weight: .bold)
         }
     }
-    @IBOutlet weak var openTime: UILabel!
-    @IBOutlet weak var closeTime: UILabel!
-    @IBOutlet weak var vacancyState: UILabel!
+    @IBOutlet weak var openTime: UILabel! {
+        didSet {
+            openTime.font = .systemFont(ofSize: 14, weight: .medium)
+        }
+    }
+    @IBOutlet weak var closeTime: UILabel! {
+        didSet {
+            closeTime.font = .systemFont(ofSize: 14, weight: .medium)
+        }
+    }
+    @IBOutlet weak var vacancyState: UILabel! {
+        didSet {
+            vacancyState.font = UIFont.systemFont(ofSize: 17, weight: .medium)
+        }
+    }
     
     
     public var delegate: cardViewDelegate?
+    
     public var hartButtonState: isSelected = .normal
     public var bounceAnimation: CAKeyframeAnimation = {
         let bounceAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
@@ -121,24 +134,23 @@ class testCustomView: UIView {
 //        }
         
         if requestState == false {
-            restaurantName.text = "Yonyon食堂"
+            restaurantName.text = "yonyon食堂"
             openTime.text = "Open: 10:00AM"
             closeTime.text = "Close: 20:00PM"
             vacancyState.text = "カメラを設置していません"
             vacancyState.textColor = .lightGray
-            vacancyState.font = UIFont.systemFont(ofSize: 15, weight: .medium)
         } else {
-            restaurantName.text = "Yonyon食堂"
+            // request済み出れば、リアルタイムの情報見れる
+            restaurantName.text = "yonyon食堂"
             openTime.text = "Open: 10:00AM"
             closeTime.text = "Close: 20:00PM"
             vacancyState.text = "空きあり"
             vacancyState.textColor = UIColor(rgb: 0x06B3EA)
-            vacancyState.font = UIFont.systemFont(ofSize: 15, weight: .medium)
             requestButton.isHidden = true
         }
     }
     
-    public func configure(with model: [PlaceModel]) {
+    public func configure(with model: [PlaceModel], request requestState: Bool) {
         // model の情報がなかったら
         if model.isEmpty {
             image1.image = UIImage(systemName: "photo")?.withTintColor(.lightGray)
@@ -154,6 +166,7 @@ class testCustomView: UIView {
             requestButton.backgroundColor = .lightGray
         } else {
             let vacantSeatsArray = model.first?.seats
+            // 空きありがdefaultの状態
             var noVacancy = false
             
 //            image1.image = UIImage(systemName: "photo")?.withTintColor(.lightGray)
@@ -163,27 +176,26 @@ class testCustomView: UIView {
             openTime.text = "Open: 10:00AM"
             closeTime.text = "Close: 20:00PM"
             
-            for i in 0..<(vacantSeatsArray?.count ?? 0)  {
-                if let hasVacant = vacantSeatsArray?[i].isUsed {
-                    vacancyState.text = "満席"
-                    vacancyState.textColor = .red.withAlphaComponent(0.7)
-                    vacancyState.font = UIFont.systemFont(ofSize: 15, weight: .medium)
-                    noVacancy = hasVacant
-                    break
+            if requestState {
+                // requestされたのであれば、
+                for i in 0..<(vacantSeatsArray?.count ?? 0)  {
+                    if let hasVacant = vacantSeatsArray?[i].isUsed {
+                        vacancyState.text = "満席"
+                        vacancyState.textColor = .red.withAlphaComponent(0.7)
+                        noVacancy = hasVacant
+                        break
+                    }
                 }
+                
+                if !noVacancy {
+                    vacancyState.text = "空席あり"
+                    vacancyState.textColor = UIColor(rgb: 0x06B32A)
+                }
+            } else {
+                // requestされてないところであれば
+                vacancyState.text = "カメラを設置していません"
+                vacancyState.textColor = .black
             }
-            
-            if !noVacancy {
-                vacancyState.text = "空席あり"
-                vacancyState.font = UIFont.systemFont(ofSize: 15, weight: .medium)
-                vacancyState.textColor = UIColor(rgb: 0x06B32A)
-            }
-            
-//            vacancyState.text = "空席あり"
-//            vacancyState.textColor = .lightGray
-//            vacancyState.font = UIFont.systemFont(ofSize: 15, weight: .medium)
-//            vacancyState.textColor = UIColor(rgb: 0x06B32A)
-//            vacancyState.font = UIFont.systemFont(ofSize: 15, weight: .medium)
         }
     }
     
@@ -204,6 +216,7 @@ class testCustomView: UIView {
 
 }
 
+// UIColorをhexタイプで設定できるように
 extension UIColor {
     convenience init(red: Int, green: Int, blue: Int, a: Int = 0xFF) {
         self.init(red: CGFloat(red) / 255.0,

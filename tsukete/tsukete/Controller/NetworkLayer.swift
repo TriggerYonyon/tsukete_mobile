@@ -35,6 +35,9 @@ class NetworkLayer {
             // 様々な状況でErrorが考えられるとき、そのErrorに対応するためにtryを使う
             let request = try buildRequest(type: type)
             URLSession.shared.dataTask(with: request) { data, response, error in
+//                if response == nil {
+//                    print("ネットワークに繋がっていません")
+//                }
                 print((response as! HTTPURLResponse).statusCode)
                 
                 completion(data, response, error)

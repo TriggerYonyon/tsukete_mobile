@@ -25,6 +25,10 @@ class DetailCardVC: UIViewController {
     let liveSeatsView = LiveSeatsView(frame: .zero)
     let seatTableView: UITableView! = UITableView()
     
+    // mainVCからのcheck Stateをそのまま、受け取る
+    // お店の名前: [お気に入りリストに入れたか、 リクエストしたか]のDictionary
+    var checkStatePlaceDict = [String: [Bool]]()
+    
     var image1 = UIImage()
     var image2 = UIImage()
     var image3 = UIImage()
@@ -91,6 +95,7 @@ class DetailCardVC: UIViewController {
         setViewDataConfigure()
         
         self.view.addSubview(seatTableView)
+        self.restaurantDetailView.delegate = self
         seatTableView.isScrollEnabled = false
         setTableViewConstraints()
         seatTableView.delegate = self
@@ -122,7 +127,15 @@ class DetailCardVC: UIViewController {
     
     // detail Viewをconfigure
     func setViewDataConfigure() {
-        restaurantDetailView.configure(with: seatsModelByPlace)
+        var requestState = false
+        
+        if checkStatePlaceDict[restaurantTitle] != nil {
+            // nilがないなら、(すでに検索をしてみたお店のcase)
+            requestState = checkStatePlaceDict[restaurantTitle]![0]
+        }
+        
+        restaurantDetailView.configure(with: seatsModelByPlace, request: requestState)
+        checkStateConfigure(with: checkStatePlaceDict)
     }
     
     
@@ -197,10 +210,13 @@ class DetailCardVC: UIViewController {
         restaurantDetailView.translatesAutoresizingMaskIntoConstraints = false
         
         restaurantDetailView.topAnchor.constraint(equalTo: restaurantLabel.bottomAnchor, constant: 30).isActive = true
-        restaurantDetailView.heightAnchor.constraint(equalToConstant: 250).isActive = true
-//        restaurantDetailView.imageStackview.heightAnchor.constraint(equalToConstant: 0).isActive = true
-        restaurantDetailView.requestButton.isHidden = true
-        restaurantDetailView.requestButton.heightAnchor.constraint(equalToConstant: 0).isActive = true
+        // すでに、layoutが設定されているのであれば、heightConstraintsを再び設定する必要はない
+//        restaurantDetailView.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        // requestボタンをクリックした後のみ、viewを見れるので、request Buttonを無くす必要があると考えた
+//        restaurantDetailView.requestButton.isHidden = true
+//        restaurantDetailView.requestButton.heightAnchor.constraint(equalToConstant: 0).isActive = true
+        
+        
         restaurantDetailView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         restaurantDetailView.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 35).isActive = true
         restaurantDetailView.rightAnchor.constraint(equalTo: self.view.rightAnchor, constant: -35).isActive = true
@@ -212,9 +228,34 @@ class DetailCardVC: UIViewController {
     }
     
     // Data Model 関連
-    private func configure(with: PlaceModel) {
+    // mainVCから、受け取ったmodelのcheckStateを反映する
+    func checkStateConfigure(with stateDict: [String: [Bool]]) {
+        // model があるときだけ、detail Viewに入る
+        guard let hasRestauName = restaurantDetailView.restaurantName.text else {
+            return
+        }
         
-        
+        if stateDict[hasRestauName] != nil {
+            let requestState = stateDict[hasRestauName]![0]
+            let likeState = stateDict[hasRestauName]![1]
+            
+            // hartButtonのclick状態に合わせて、buttonのstate初期値を設定
+            switch likeState {
+            case true:
+                restaurantDetailView.hartButtonState = .selected
+                restaurantDetailView.setHartButton()
+            case false:
+                restaurantDetailView.hartButtonState = .normal
+                restaurantDetailView.setHartButton()
+            }
+            
+            switch requestState {
+            case true:
+                print(requestState)
+            case false:
+                print(requestState)
+            }
+        }
     }
     
     @IBAction func dismissClicked(_ sender: Any) {
@@ -231,6 +272,8 @@ extension DetailCardVC: cardViewDelegate {
     }
     
     func hartButtonEvent() {
+        print("click")
+        
         if restaurantDetailView.hartButtonState == .normal {
             restaurantDetailView.hartButtonState = .selected
             restaurantDetailView.setHartButton()

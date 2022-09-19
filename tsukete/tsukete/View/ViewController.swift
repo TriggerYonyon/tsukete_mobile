@@ -40,6 +40,7 @@ class ViewController: UIViewController {
     
     // Server API Model
     // リクエストしたお店かどうか
+    // MARK: defaultは false
     var requestState = false
     // イメージがあるかどうか
     var imageData = [UIImage]()
@@ -164,16 +165,22 @@ class ViewController: UIViewController {
                     self.getAddressString()
                     
                     DispatchQueue.main.async {
-                        // CardViewの情報をModelの情報に変更
-                        self.cardView.configure(with: self.resultPlaceModel)
                         // お気に入りリストに入れたか、リクエストしたかは、core Dataに保存しておく
                         if self.checkStatePlaceDict[self.restauName] != nil {
-                            // 初めて検査した場所であれば、false  falseにしておく
-                            self.checkStatePlaceDict[self.restauName] = [false, false]
+                            // すでに検索を行い、bool typeが入っていればdetailVCに引き渡す
+                            // MARK: ⚠️途中の段階
+                            print(self.checkStatePlaceDict[self.restauName]!)
+                            self.requestState = self.checkStatePlaceDict[self.restauName]![0]
                         } else {
-                            
+                            // 初めて検査した場所であれば、Default: false  falseにしておく
+                            self.checkStatePlaceDict[self.restauName] = [false, false]
+                            self.requestState = self.checkStatePlaceDict[self.restauName]![0]
                         }
-                        // すでに検索を行い、bool typeが入っていれば処理なし
+                        
+                        
+                        
+                        // CardViewの情報をModelの情報に変更
+                        self.cardView.configure(with: self.resultPlaceModel, request: self.requestState)
                     }
                     
                 } catch {
@@ -228,6 +235,47 @@ class ViewController: UIViewController {
         } else {
             return false
         }
+    }
+    
+    func setRequestAlert() -> UIAlertController {
+        let alert = UIAlertController(title: "リクエスト権限エラー", message: "リクエストが必要です。\nリクエストボタンを押して、お店からのリクエスト承諾をお待ちください。", preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: "確認", style: .default) { _ in
+            print("alert!")
+        }
+        alert.addAction(alertAction)
+        
+        return alert
+    }
+    
+    func setCancelRequestAlert() -> UIAlertController {
+        let alert = UIAlertController(title: "リクエストキャンセル", message: "申請中のリクエストを取り消しますか?", preferredStyle: .actionSheet)
+        let back = UIAlertAction(title: "戻る", style: .cancel) { _ in
+            print("back!")
+        }
+        
+        let cancel = UIAlertAction(title: "取り消し", style: .destructive) { _ in
+            self.requestCancelAction()
+            print("cancel the request")
+        }
+        
+        alert.addAction(back)
+        alert.addAction(cancel)
+        
+        return alert
+    }
+    
+    func requestCancelAction() {
+        cardView.requestButton.backgroundColor = UIColor(rgb: 0xFFBC42)
+        cardView.requestButton.setTitle("¥ 設置リクエスト", for: .normal)
+        cardView.requestButton.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        cardView.requestButton.setTitleColor(.black, for: .normal)
+       
+        // request状態をまた、trueに
+        requestState = false
+        
+        // vacancy stateのtext
+        cardView.vacancyState.text = "カメラを設置していません"
+        cardView.vacancyState.textColor = .black
     }
     
     // table Viewは、resultPlaceModel[indexPath.row]みたいにやる
@@ -315,8 +363,20 @@ class ViewController: UIViewController {
             return
         }
         
+        // requestしてないなら、Viewのclickができないように
+        guard requestState else {
+            // request 申請後見れますの popup or toastメッセージを表示
+            // 方法1: alertを表示
+            self.present(setRequestAlert(), animated: true, completion: nil)
+            return
+        }
+        
         // dataをdetailVCに渡す
         detailVC.seatsModelByPlace = resultPlaceModel
+        
+        guard let hasRestauName = cardView.restaurantName.text else {
+            return
+        }
         
         if let hasImage1 = self.cardView.image1.image {
             detailVC.image1 = hasImage1
@@ -329,6 +389,9 @@ class ViewController: UIViewController {
         }
         
         detailVC.restaurantTitle = cardView.restaurantName.text!
+        
+        // MARK: お気に入りボタンとリクエストボタンのstateを引き渡す
+        detailVC.checkStatePlaceDict[hasRestauName] = self.checkStatePlaceDict[hasRestauName]
         
         detailVC.modalPresentationStyle = .fullScreen
         self.present(detailVC, animated: true, completion: nil)
@@ -544,11 +607,20 @@ extension ViewController: UISearchBarDelegate, UISearchResultsUpdating {
         print(searchText)
     }
     
-}
-
-// card View関連delegate
-extension ViewController: cardViewDelegate {
-    func requestButtonEvent() {
+    func requestApplyTap() {
+        cardView.requestButton.setTitle("リクエスト申請中", for: .normal)
+        cardView.requestButton.setTitleColor(.white, for: .normal)
+        // backGroundの反映はうまくできた
+        cardView.requestButton.backgroundColor = UIColor(rgb: 0xA9A9A9)
+//        cardView.requestButton.isEnabled = false
+        
+        // 実際は、お店側のrequest承諾が必要だが、臨時的にrequest Stateをtrueにする
+        requestState = true
+        
+        // vacancy stateのtext
+        cardView.vacancyState.text = "リクエスト承諾をお待ちください"
+        cardView.vacancyState.textColor = UIColor(rgb: 0x0000CD)
+        
         print("mainPage -> RequestPopVC")
         print("button tapped!")
         // popup viewを出す
@@ -567,17 +639,47 @@ extension ViewController: cardViewDelegate {
                 }
             }
         }
+    }
+    
+    func requestCancelTap() {
+        self.present(setCancelRequestAlert(), animated: true)
+    }
+    
+}
+
+// card View関連delegate
+extension ViewController: cardViewDelegate {
+    func requestButtonEvent() {
+        // buttonをクリックすると、リクエスト済みという文字に変更する必要がある
+        // buttonクリックしたから、disabledに変える
+        
+        if !requestState {
+            // requestがまだの状態 (falseの場合)
+            requestApplyTap()
+        } else {
+            // requestをした場合 (申請中)
+            requestCancelTap()
+        }
+       
         
     }
     
     func hartButtonEvent() {
+        guard let hasRestauName = cardView.restaurantName.text else {
+            return
+        }
+        
         if cardView.hartButtonState == .normal {
             cardView.hartButtonState = .selected
+            // MARK: selectedは、trueに
+            checkStatePlaceDict[hasRestauName]![1] = true
             cardView.setHartButton()
             cardView.hartButton.layer.add(cardView.bounceAnimation, forKey: nil)
             print("normal -> selected")
         } else {
             cardView.hartButtonState = .normal
+            // MARK: normalは、falseに
+            checkStatePlaceDict[hasRestauName]![1] = false
             cardView.setHartButton()
             cardView.hartButton.layer.add(cardView.bounceAnimation, forKey: nil)
             print("selected -> normal")

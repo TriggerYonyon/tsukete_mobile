@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		51879ADDAA694D0FC231E091 /* libPods-tsukete-tsuketeUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 76F1F15DC4B3DBE0B2A4A2A0 /* libPods-tsukete-tsuketeUITests.a */; };
 		89108C2747E938E8CE2F3296 /* libPods-tsuketeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D8B960B57438397629643E8 /* libPods-tsuketeTests.a */; };
+		9414924528D86A18005AECD4 /* aircondition.png in Resources */ = {isa = PBXBuildFile; fileRef = 9414924428D86A18005AECD4 /* aircondition.png */; };
 		9416638428D2D7F400E614C8 /* DetailListSeatsVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9416638328D2D7F400E614C8 /* DetailListSeatsVC.storyboard */; };
 		9416638628D2D86400E614C8 /* DetailCardVC.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9416638528D2D86400E614C8 /* DetailCardVC.storyboard */; };
 		9427AFB528D41E09005D27D8 /* thankYouImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 9427AFB428D41E09005D27D8 /* thankYouImage.png */; };
@@ -81,6 +82,7 @@
 		5264F859F1A2C81D90C2C7F6 /* Pods-tsukete.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tsukete.debug.xcconfig"; path = "Target Support Files/Pods-tsukete/Pods-tsukete.debug.xcconfig"; sourceTree = "<group>"; };
 		76F1F15DC4B3DBE0B2A4A2A0 /* libPods-tsukete-tsuketeUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-tsukete-tsuketeUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		79D30214373D5BF68D8DC036 /* Pods-tsukete-tsuketeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tsukete-tsuketeUITests.debug.xcconfig"; path = "Target Support Files/Pods-tsukete-tsuketeUITests/Pods-tsukete-tsuketeUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		9414924428D86A18005AECD4 /* aircondition.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = aircondition.png; sourceTree = "<group>"; };
 		9416638328D2D7F400E614C8 /* DetailListSeatsVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DetailListSeatsVC.storyboard; sourceTree = "<group>"; };
 		9416638528D2D86400E614C8 /* DetailCardVC.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DetailCardVC.storyboard; sourceTree = "<group>"; };
 		9427AFB428D41E09005D27D8 /* thankYouImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thankYouImage.png; sourceTree = "<group>"; };
@@ -289,6 +291,7 @@
 				94D715CA28D33636003332D9 /* concent.png */,
 				9427AFB428D41E09005D27D8 /* thankYouImage.png */,
 				94D715CC28D3363C003332D9 /* noTabaco.png */,
+				9414924428D86A18005AECD4 /* aircondition.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -437,6 +440,7 @@
 				9437613228D1CE680061A1AF /* explain3.png in Resources */,
 				94A0ACCA28CED3C8003F0F95 /* tsuketeLogo.png in Resources */,
 				94A0ACA228CED061003F0F95 /* LaunchScreen.storyboard in Resources */,
+				9414924528D86A18005AECD4 /* aircondition.png in Resources */,
 				94A0AC9F28CED061003F0F95 /* Assets.xcassets in Resources */,
 				94D715CB28D33636003332D9 /* concent.png in Resources */,
 				9453D13728D3866A0098FC66 /* newExplain1.png in Resources */,
