@@ -8,14 +8,20 @@
 import UIKit
 import GoogleMaps
 import CoreLocation
+import CoreData
 
 // アプリのlogic:
 // 最初は、Onboarding View(アプリの説明)を表示させる
 // アプリの説明の確認の後、main page(google map)があるとこに画面遷移
 
-//protocol MainViewDelegate {
-//    func isAlreadyClicked(selected: isSelected)
-//}
+// Dataの連動のlogic
+// 1. お店検索 -> APIに登録されているお店であるかどうかをチェック (requestAPI)
+// 2. APIの通り、cardViewに表示される. ここで、imageもapi requestを行い、表示させる ->まだ、coreDataに保存x
+// 3. requestボタンやlikeボタンを押したら coreDataのオブジェクトを生成して保存するように
+// 3-(1). すでにあるrestaurantかどうかをcheck -> すでにcoredataにある場合　updataCoreData, じゃなければsaveCoreData
+// 3-(2). リクエストをしたお店であれば、markerが表示されるように,  likeボタンを押したお店であれば markerはlike buttonのイメージ
+// 4. アプリを再起動しても、coreDataが保存されているかを確認
+
 
 class ViewController: UIViewController {
 //
@@ -40,6 +46,7 @@ class ViewController: UIViewController {
     
     // Server API Model
     // リクエストしたお店かどうか
+    // MARK: defaultは false
     var requestState = false
     // イメージがあるかどうか
     var imageData = [UIImage]()
@@ -47,6 +54,13 @@ class ViewController: UIViewController {
     var networkLayer = NetworkLayer()
     // お店の名前: [お気に入りリストに入れたか、 リクエストしたか]のDictionary
     var checkStatePlaceDict = [String: [Bool]]()
+    
+    // CoreData関連
+    // お店のrequest, like list管理
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    // CoreDataのentityの配列
+    var checkStateList = [User_checkStateList]()
+    
     
     @IBOutlet weak var cardView: testCustomView! {
         didSet {
@@ -75,7 +89,7 @@ class ViewController: UIViewController {
         mapConfigure()
         // MARK: setInitMarker: ❗️CHANGE 指定してからmarkerを設定
         // -> 今後requestしたお店だけ表示されるように変更予定
-        setInitMarker()
+//        setInitMarker()
 //        markerConfigure()
         mapView.delegate = self
         self.view.addSubview(mapView)
@@ -87,11 +101,9 @@ class ViewController: UIViewController {
         dismissKeyboardByTap()
         // ⚠️API modelからconfigureするつもり
 //        cardView.configure(state: requestState)
+        requestRestaurantAPI()
         cardViewGesture()
         addKeyboardObserver()
-        requestRestaurantAPI()
-    
-        requestGetImage()
     }
     
     // Memory Warning
@@ -119,8 +131,9 @@ class ViewController: UIViewController {
             //位置修正を行なったため、mapとmarkerを移動させる
             self.mapCameraUpdate()
             self.markerConfigure(newLocate: CLLocationCoordinate2D(latitude: self.searchPositionLat, longitude: self.searchPositionLng))
+            
             if self.cardView.isHidden {
-                self.cardView.isHidden = true
+                self.cardView.isHidden = false
             }
             
         }
@@ -143,37 +156,50 @@ class ViewController: UIViewController {
         }
     }
     
+    // 最初からserver apiを持ってくるようにすると、問題なしだが、検索するたびにAPIを叩くようにするとエラー生じる
     func requestRestaurantAPI() {
-        //Query Stringを使って、target要素を指定
-        // 今回は Queryなしで
-        // shopsだけで必要な情報は読み込める
-        // localの方
 //        let url = "http://localhost:8080/api/shops"
         // deployしたserverの方
         let url = "http://54.199.251.178:8080/api/shops"
         
         networkLayer.request(type: .justURL(urlString: url)) { data, response, error in
             if let hasData = data {
-                
                 do {
                     self.resultPlaceModel = try JSONDecoder().decode([PlaceModel].self, from: hasData)
                     
-                    // requestAPIから事前に登録
+                    // 検索のtextとAPIのtextが一致しているかを確認して、一致しているときだけ、以下の処理を進める
+                    guard self.searchText == self.resultPlaceModel.first?.name else {
+                        // restauName初期化
+                        print("no searchText exists in server api")
+                        self.noHaveSearchResultEvent()
+                        self.restauName = ""
+                        return
+                    }
+                    
+                    // requestAPIからRestauNameをmatchする (geoCodingを容易にするため)
                     self.restauName = self.resultPlaceModel.first?.name ?? ""
-                    print(self.restauName)
+                    print("restaurant Name:", self.restauName)
                     self.getAddressString()
                     
                     DispatchQueue.main.async {
-                        // CardViewの情報をModelの情報に変更
-                        self.cardView.configure(with: self.resultPlaceModel)
                         // お気に入りリストに入れたか、リクエストしたかは、core Dataに保存しておく
                         if self.checkStatePlaceDict[self.restauName] != nil {
-                            // 初めて検査した場所であれば、false  falseにしておく
-                            self.checkStatePlaceDict[self.restauName] = [false, false]
+                            // すでに検索を行い、bool typeが入っていればdetailVCに引き渡す
+                            // MARK: ⚠️途中の段階
+                            print(self.checkStatePlaceDict[self.restauName]!)
+                            self.requestState = self.checkStatePlaceDict[self.restauName]![0]
                         } else {
-                            
+                            // 初めて検査した場所であれば、Default: false  falseにしておく
+                            self.checkStatePlaceDict[self.restauName] = [false, false]
+                            self.requestState = self.checkStatePlaceDict[self.restauName]![0]
                         }
-                        // すでに検索を行い、bool typeが入っていれば処理なし
+                        
+                        
+                        // CardViewの情報をModelの情報に変更
+                        self.cardView.configure(with: self.resultPlaceModel, request: self.requestState)
+                        self.cardView.hartButton.isEnabled = true
+                        // CardViewのimageもconfigure
+                        self.requestGetImage()
                     }
                     
                 } catch {
@@ -209,13 +235,13 @@ class ViewController: UIViewController {
     }
     
     func getAddressString() {
-        if let hasData = resultPlaceModel.first {
+        if let hasData = resultPlaceModel.first, searchText == resultPlaceModel.first?.name {
             targetAddress += hasData.prefecture ?? ""
             targetAddress += hasData.locality ?? ""
             targetAddress += hasData.street ?? ""
             targetAddress += hasData.building ?? ""
-            print(targetAddress)
         } else {
+            targetAddress = ""
             return
         }
     }
@@ -269,7 +295,7 @@ class ViewController: UIViewController {
 //        let newCamera = GMSCameraPosition(latitude: self.searchPositionLat, longitude: self.searchPositionLng, zoom: 13)
         let targetLocate = CLLocationCoordinate2D(latitude: searchPositionLat, longitude: searchPositionLng)
         mapView.animate(toLocation: targetLocate)
-        mapView.animate(toZoom: 15)
+        mapView.animate(toZoom: 11)
 //        let zoomCamera = GMSCameraUpdate.setTarget(targetLocate, zoom: 13)
     }
     
@@ -315,8 +341,20 @@ class ViewController: UIViewController {
             return
         }
         
+        // requestしてないなら、Viewのclickができないように
+        guard requestState else {
+            // request 申請後見れますの popup or toastメッセージを表示
+            // 方法1: alertを表示
+            self.present(setRequestAlert(), animated: true, completion: nil)
+            return
+        }
+        
         // dataをdetailVCに渡す
         detailVC.seatsModelByPlace = resultPlaceModel
+        
+        guard let hasRestauName = cardView.restaurantName.text else {
+            return
+        }
         
         if let hasImage1 = self.cardView.image1.image {
             detailVC.image1 = hasImage1
@@ -329,6 +367,9 @@ class ViewController: UIViewController {
         }
         
         detailVC.restaurantTitle = cardView.restaurantName.text!
+        
+        // MARK: お気に入りボタンとリクエストボタンのstateを引き渡す
+        detailVC.checkStatePlaceDict[hasRestauName] = self.checkStatePlaceDict[hasRestauName]
         
         detailVC.modalPresentationStyle = .fullScreen
         self.present(detailVC, animated: true, completion: nil)
@@ -372,7 +413,6 @@ class ViewController: UIViewController {
         guard appearKeyboard == true else {
             return
         }
-        
         appearKeyboard = false
         
         print(appearKeyboard)
@@ -391,25 +431,22 @@ class ViewController: UIViewController {
         }
     }
     
-    private func setRequestButtonState() {
-        if restauName != "" {
-            if let hasDict = checkStatePlaceDict[self.restauName] {
-                cardView.translatesAutoresizingMaskIntoConstraints  = false
-                
-                if hasDict[1] {
-                    // すでにrequestされたものであれば
-                    // heightを0にしてから、topAnchorを調整 -> 無駄なspaceを減らす
-                    cardView.requestButton.heightAnchor.constraint(equalToConstant: 0).isActive = true
-                    cardView.requestButton.topAnchor.constraint(equalTo: cardView.vacancyState.bottomAnchor, constant: 0).isActive = true
-                } else {
-                    // まだ、requestされていない場合の処理
-                }
-            }
-            
-            
-            
-        }
-    }
+//    private func setRequestButtonState() {
+//        if restauName != "" {
+//            if let hasDict = checkStatePlaceDict[self.restauName] {
+//                cardView.translatesAutoresizingMaskIntoConstraints  = false
+//
+//                if hasDict[1] {
+//                    // すでにrequestされたものであれば
+//                    // heightを0にしてから、topAnchorを調整 -> 無駄なspaceを減らす
+//                    cardView.requestButton.heightAnchor.constraint(equalToConstant: 0).isActive = true
+//                    cardView.requestButton.topAnchor.constraint(equalTo: cardView.vacancyState.bottomAnchor, constant: 0).isActive = true
+//                } else {
+//                    // まだ、requestされていない場合の処理
+//                }
+//            }
+//        }
+//    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -421,7 +458,6 @@ class ViewController: UIViewController {
         
         if didShowOnboardingView == false {
             didShowOnboardingView = true
-            
             let pageVC = OnboardingPageVC(transitionStyle: .scroll, navigationOrientation: .horizontal, options: .none)
 
             pageVC.modalPresentationStyle = .overCurrentContext
@@ -436,6 +472,7 @@ class ViewController: UIViewController {
     }
 }
 
+// MARK: Google Map View関連
 extension ViewController: GMSMapViewDelegate {
     // Map ViewをTapすることによるEvent
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
@@ -446,7 +483,6 @@ extension ViewController: GMSMapViewDelegate {
             searchBar.endEditing(true)
             appearKeyboard = false
         }
-        
         
         if cardView.isHidden == false {
             print("true")
@@ -478,18 +514,31 @@ extension ViewController: UISearchBarDelegate, UISearchResultsUpdating {
         print(searchText)
         
         searchText = hasText
+        
+        // MARK: searchボタンを押すとrestaurantAPIをrequestを叩く
+        // ⚠️ requestは、main threadでasyncで動く
+        requestRestaurantAPI()
+        // search ボタンを押すと、常にkeyboardが表示されないように
+        searchBar.endEditing(true)
+        
         if isMatchedName() {
+            print(checkStateList)
             // markerを追加してから、変更する方法
             // nil してからまた、入れる
             if marker.map != nil {
                 marker.map = nil
+            } else {
+                marker.map = mapView
             }
+            
             print("true: \(restauName)")
-            searchBar.endEditing(true)
             // MARK: 🔥 searchして、ヒットしたらGeoCodingを行う
             getLocation(placeName: restauName, addressName: targetAddress)
         } else {
-            markerTitle = ""
+            // ⚠️nameがmatchしても一回の検索でエラーが表示される問題があった
+            // ⚠️ここの検索で一回止まった
+            print("no exist search by search button click")
+            noHaveSearchResultEvent()
         }
     }
     
@@ -497,7 +546,7 @@ extension ViewController: UISearchBarDelegate, UISearchResultsUpdating {
         guard let hasText = searchController.searchBar.text else {
             return
         }
-        print(hasText)
+        print("update:", hasText)
     }
     
     // 最初のmarker設定
@@ -515,7 +564,6 @@ extension ViewController: UISearchBarDelegate, UISearchResultsUpdating {
     }
     
 
-    
     // search bar touch後、入力を始めたときに呼び出されるメソッド
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         if !searchBar.showsCancelButton {
@@ -540,15 +588,23 @@ extension ViewController: UISearchBarDelegate, UISearchResultsUpdating {
             return
         }
         
-        print(hasText)
-        print(searchText)
+        print("textDidChange method:", hasText)
     }
     
-}
-
-// card View関連delegate
-extension ViewController: cardViewDelegate {
-    func requestButtonEvent() {
+    func requestApplyTap() {
+        cardView.requestButton.setTitle("リクエスト申請中", for: .normal)
+        cardView.requestButton.setTitleColor(.white, for: .normal)
+        // backGroundの反映はうまくできた
+        cardView.requestButton.backgroundColor = UIColor(rgb: 0xA9A9A9)
+//        cardView.requestButton.isEnabled = false
+        
+        // 実際は、お店側のrequest承諾が必要だが、臨時的にrequest Stateをtrueにする
+        requestState = true
+        
+        // vacancy stateのtext
+        cardView.vacancyState.text = "リクエスト承諾をお待ちください"
+        cardView.vacancyState.textColor = UIColor(rgb: 0x0000CD)
+        
         print("mainPage -> RequestPopVC")
         print("button tapped!")
         // popup viewを出す
@@ -567,27 +623,172 @@ extension ViewController: cardViewDelegate {
                 }
             }
         }
+    }
+    
+    func requestCancelTap() {
+        self.present(setCancelRequestAlert(), animated: true)
+    }
+    
+}
+
+// MARK: card View関連delegate
+extension ViewController: cardViewDelegate {
+    func requestButtonEvent() {
+        // buttonをクリックすると、リクエスト済みという文字に変更する必要がある
+        // buttonクリックしたから、disabledに変える
         
+        if !requestState {
+            // requestがまだの状態 (falseの場合)
+            requestApplyTap()
+        } else {
+            // requestをした場合 (申請中)
+            requestCancelTap()
+        }
     }
     
     func hartButtonEvent() {
+        guard let hasRestauName = cardView.restaurantName.text else {
+            return
+        }
+        
         if cardView.hartButtonState == .normal {
             cardView.hartButtonState = .selected
+            // MARK: selectedは、trueに
+            checkStatePlaceDict[hasRestauName]![1] = true
             cardView.setHartButton()
             cardView.hartButton.layer.add(cardView.bounceAnimation, forKey: nil)
             print("normal -> selected")
         } else {
             cardView.hartButtonState = .normal
+            // MARK: normalは、falseに
+            checkStatePlaceDict[hasRestauName]![1] = false
             cardView.setHartButton()
             cardView.hartButton.layer.add(cardView.bounceAnimation, forKey: nil)
             print("selected -> normal")
         }
     }
+    
+    func noHaveSearchResultEvent() {
+        self.present(setNoResultAlert(), animated: true)
+    }
+    
 }
 
+// MARK: Alert 関連
+extension ViewController {
+    func setRequestAlert() -> UIAlertController {
+        let alert = UIAlertController(title: "リクエスト権限エラー", message: "リクエストが必要です。\nリクエストボタンを押して、お店からのリクエスト承諾をお待ちください。", preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: "確認", style: .default) { _ in
+            print("alert!")
+        }
+        alert.addAction(alertAction)
+        
+        return alert
+    }
+    
+    func setCancelRequestAlert() -> UIAlertController {
+        let alert = UIAlertController(title: "リクエストキャンセル", message: "申請中のリクエストを取り消しますか?", preferredStyle: .actionSheet)
+        let back = UIAlertAction(title: "戻る", style: .cancel) { _ in
+            print("back!")
+        }
+        
+        let cancel = UIAlertAction(title: "取り消し", style: .destructive) { _ in
+            self.requestCancelAction()
+            print("cancel the request")
+        }
+        
+        alert.addAction(back)
+        alert.addAction(cancel)
+        
+        return alert
+    }
+    
+    func requestCancelAction() {
+        cardView.requestButton.backgroundColor = UIColor(rgb: 0xFFBC42)
+        cardView.requestButton.setTitle("¥ 設置リクエスト", for: .normal)
+        cardView.requestButton.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        cardView.requestButton.setTitleColor(.black, for: .normal)
+       
+        // request状態をまた、trueに
+        requestState = false
+        
+        // vacancy stateのtext
+        cardView.vacancyState.text = "カメラを設置していません"
+        cardView.vacancyState.textColor = .black
+    }
+    
+    func setNoResultAlert() -> UIAlertController {
+        let alert = UIAlertController(title: "検索結果エラー", message: "入力された名前の場所を見つかりませんでした。", preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: "確認", style: .default) { _ in
+            print("No Data!")
+        }
+        alert.addAction(alertAction)
+        
+        return alert
+    }
+    
+    func inputAlert() -> UIAlertController {
+        let alert = UIAlertController(title: "入力エラー", message: "一文字以上を入力してください。", preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: "確認", style: .default) { _ in
+            print("input error!")
+        }
+        alert.addAction(alertAction)
+        
+        return alert
+    }
+    
+    
+}
 
-
-
+// MARK: CoreData関連
+extension ViewController {
+    // local storageに保存されたものをfetchする間数
+    func fetchCoreData() {
+        // entityの名前を読み込む
+        // <entity名> entity名.fetchRequest()
+        let fetchRequest: NSFetchRequest<User_checkStateList> = User_checkStateList.fetchRequest()
+        let context = appDelegate.persistentContainer.viewContext
+        
+        do {
+            self.checkStateList = try context.fetch(fetchRequest)
+        } catch {
+            print(error)
+        }
+    }
+    
+    // 検索を通して、一回見てみたことのあるお店であれば、その時点でcore Dataのオブジェクトを生成するようにした
+    func saveCoreData(checkName restauName: String) {
+        let context = appDelegate.persistentContainer.viewContext
+        guard let entityDescription = NSEntityDescription.entity(forEntityName: "User_checkStateList", in: context) else {
+            return
+        }
+        
+        guard let object = NSManagedObject(entity: entityDescription, insertInto: context) as? User_checkStateList else {
+            return
+        }
+        
+        // ⚠️それぞれuuidが異なる -> 今後、firebase の authenticationを導入する予定
+        object.uuid = UUID()
+        object.restaurantName = restauName
+        
+        
+        
+        
+        for i in 0..<checkStateList.count {
+            if checkStateList[i].restaurantName == restauName {
+                // 同じ名前のrestaurantをすでに格納したのであれば、return
+                return
+            }
+        }
+        
+        let index = checkStateList.count
+        checkStateList[index].restaurantName = restauName
+    }
+    
+    func updateCoreData(checkName restauName: String) {
+        
+    }
+}
 
 
 

@@ -37,6 +37,7 @@ class DetailListSeatsVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
 //        addSubView()
 //
 ////        setContentViewConstraints()
