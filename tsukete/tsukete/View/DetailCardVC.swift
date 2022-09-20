@@ -60,10 +60,25 @@ class DetailCardVC: UIViewController {
     }
     @IBOutlet weak var seatCheckInfoView: UIView!
     
+    @IBOutlet weak var vacantSeatImage: UIView! {
+        didSet {
+            vacantSeatImage.backgroundColor = UIColor(rgb: 0x06B3EA)
+            vacantSeatImage.layer.cornerRadius = vacantSeatImage.bounds.height / 2
+        }
+    }
+    @IBOutlet weak var useSeatImage: UIView! {
+        didSet {
+            useSeatImage.backgroundColor = UIColor(rgb: 0xFE5151)
+            useSeatImage.layer.cornerRadius = useSeatImage.bounds.height / 2
+        }
+    }
+    
+    
+    
     @IBOutlet weak var seatInfoView: UIView! {
         didSet {
             seatInfoView.translatesAutoresizingMaskIntoConstraints = false
-            seatInfoView.topAnchor.constraint(equalTo: seatCheckInfoView.bottomAnchor, constant: 10).isActive = true
+            seatInfoView.topAnchor.constraint(equalTo: seatCheckInfoView.bottomAnchor, constant: 5).isActive = true
             seatInfoView.heightAnchor.constraint(equalToConstant: 30).isActive = true
             seatInfoView.backgroundColor = .systemGray5
         }
@@ -266,6 +281,10 @@ class DetailCardVC: UIViewController {
 }
 
 extension DetailCardVC: cardViewDelegate {
+    func noHaveSearchResultEvent() {
+        print("no have result data")
+    }
+    
     func requestButtonEvent() {
         print("DetaialCardPage -> RequestPage")
         print("button tapped!")

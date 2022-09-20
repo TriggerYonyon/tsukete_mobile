@@ -18,15 +18,31 @@ enum isSelected {
 protocol cardViewDelegate {
     func requestButtonEvent()
     func hartButtonEvent()
+    func noHaveSearchResultEvent()
 }
+
+// default値を設定しないと、label label label...などが表示される
 
 class testCustomView: UIView {
     @IBOutlet var customView: UIView!
     
     @IBOutlet weak var imageStackview: UIStackView!
-    @IBOutlet weak var image1: UIImageView!
-    @IBOutlet weak var image2: UIImageView!
-    @IBOutlet weak var image3: UIImageView!
+    @IBOutlet weak var image1: UIImageView! {
+        didSet {
+            // alwaysOriginalをすると、色を無視できるようになる
+            image1.image = UIImage(systemName: "photo")?.withTintColor(.lightGray, renderingMode: .alwaysOriginal)
+        }
+    }
+    @IBOutlet weak var image2: UIImageView! {
+        didSet {
+            image2.image = UIImage(systemName: "photo")?.withTintColor(.lightGray, renderingMode: .alwaysOriginal)
+        }
+    }
+    @IBOutlet weak var image3: UIImageView! {
+        didSet {
+            image3.image = UIImage(systemName: "photo")?.withTintColor(.lightGray, renderingMode: .alwaysOriginal)
+        }
+    }
     
     @IBOutlet weak var requestButton: UIButton! {
         didSet {
@@ -35,6 +51,8 @@ class testCustomView: UIView {
     }
     @IBOutlet weak var hartButton: UIButton! {
         didSet {
+            // APIとヒットしてから enabledをtrueに
+            hartButton.isEnabled = false
             hartButton.setTitle("", for: .normal)
             setHartButton()
         }
@@ -42,21 +60,25 @@ class testCustomView: UIView {
     @IBOutlet weak var openCloseStackView: UIStackView!
     @IBOutlet weak var restaurantName: UILabel! {
         didSet {
+            restaurantName.text = "情報なし"
             restaurantName.font = .systemFont(ofSize: 20, weight: .bold)
         }
     }
     @IBOutlet weak var openTime: UILabel! {
         didSet {
+            openTime.text = "情報なし"
             openTime.font = .systemFont(ofSize: 14, weight: .medium)
         }
     }
     @IBOutlet weak var closeTime: UILabel! {
         didSet {
+            closeTime.text = "情報なし"
             closeTime.font = .systemFont(ofSize: 14, weight: .medium)
         }
     }
     @IBOutlet weak var vacancyState: UILabel! {
         didSet {
+            vacancyState.text = "情報なし"
             vacancyState.font = UIFont.systemFont(ofSize: 17, weight: .medium)
         }
     }
@@ -119,59 +141,25 @@ class testCustomView: UIView {
         hartButton.tintColor = .systemRed
     }
     
-    // with model: PlaceModel (request関連)
-    public func requestConfigure(state requestState: Bool) {
-//        if !model.isEmpty {
-//            // Imageを3つに絞る
-//            // ⚠️途中の段階:Image URL処理をまだ
-//            cardView.image1.image = imageData[0]
-//            cardView.image2.image = imageData[1]
-//            cardView.image3.image = imageData[2]
-//        } else {
-//            cardView.image1.image = UIImage(systemName: "photo")?.withTintColor(.lightGray)
-//            cardView.image2.image = UIImage(systemName: "photo")?.withTintColor(.lightGray)
-//            cardView.image3.image = UIImage(systemName: "photo")?.withTintColor(.lightGray)
-//        }
-        
-        if requestState == false {
-            restaurantName.text = "yonyon食堂"
-            openTime.text = "Open: 10:00AM"
-            closeTime.text = "Close: 20:00PM"
-            vacancyState.text = "カメラを設置していません"
-            vacancyState.textColor = .lightGray
-        } else {
-            // request済み出れば、リアルタイムの情報見れる
-            restaurantName.text = "yonyon食堂"
-            openTime.text = "Open: 10:00AM"
-            closeTime.text = "Close: 20:00PM"
-            vacancyState.text = "空きあり"
-            vacancyState.textColor = UIColor(rgb: 0x06B3EA)
-            requestButton.isHidden = true
-        }
-    }
-    
     public func configure(with model: [PlaceModel], request requestState: Bool) {
         // model の情報がなかったら
         if model.isEmpty {
-            image1.image = UIImage(systemName: "photo")?.withTintColor(.lightGray)
-            image2.image = UIImage(systemName: "photo")?.withTintColor(.lightGray)
-            image3.image = UIImage(systemName: "photo")?.withTintColor(.lightGray)
-            restaurantName.text = "情報なし"
-            openTime.text = "情報なし"
-            closeTime.text = "情報なし"
-            vacancyState.text = "情報なし"
+            // 見つかりませんでした！というalertを表示させたい！
+            // ⚠️ちょっと自信ないコード
+            self.delegate?.noHaveSearchResultEvent()
+            
+            restaurantName.text = "検索結果なし"
+            openTime.text = "検索結果なし"
+            closeTime.text = "検索結果なし"
+            vacancyState.text = "検索結果なし"
             vacancyState.textColor = .lightGray
             vacancyState.font = UIFont.systemFont(ofSize: 15, weight: .medium)
-            requestButton.setTitle("情報なし", for: .normal)
+            requestButton.setTitle("検索結果なし", for: .normal)
             requestButton.backgroundColor = .lightGray
         } else {
             let vacantSeatsArray = model.first?.seats
             // 空きありがdefaultの状態
             var noVacancy = false
-            
-//            image1.image = UIImage(systemName: "photo")?.withTintColor(.lightGray)
-//            image2.image = UIImage(systemName: "photo")?.withTintColor(.lightGray)
-//            image3.image = UIImage(systemName: "photo")?.withTintColor(.lightGray)
             restaurantName.text = model.first?.name ?? ""
             openTime.text = "Open: 10:00AM"
             closeTime.text = "Close: 20:00PM"
@@ -198,10 +186,6 @@ class testCustomView: UIView {
             }
         }
     }
-    
-    
-    
-    
     
     @IBAction func requestButtonTapped(_ sender: Any) {
         self.delegate?.requestButtonEvent()
