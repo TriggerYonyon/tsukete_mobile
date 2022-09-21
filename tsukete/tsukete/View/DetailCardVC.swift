@@ -35,6 +35,8 @@ class DetailCardVC: UIViewController {
     
     // seats Model
     var seatsModelByPlace: [PlaceModel] = [PlaceModel]()
+    // seats Model Index
+    var searchModelIndex = 0
     
     @IBOutlet weak var restaurantLabel: UILabel! {
         didSet {
@@ -149,7 +151,7 @@ class DetailCardVC: UIViewController {
             requestState = checkStatePlaceDict[restaurantTitle]![0]
         }
         
-        restaurantDetailView.configure(with: seatsModelByPlace, request: requestState)
+        restaurantDetailView.configure(with: seatsModelByPlace[searchModelIndex], request: requestState)
         checkStateConfigure(with: checkStatePlaceDict)
     }
     
