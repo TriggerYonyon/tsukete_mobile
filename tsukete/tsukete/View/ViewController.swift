@@ -32,6 +32,11 @@ class ViewController: UIViewController {
     var showLocationRequest = false
     var appearKeyboard = false
     
+    // 複数のmarkerを生成するための配列
+    var markerArray = [GMSMarker]()
+    // 複数のcardViewを保存するための配列
+    var cardViewsArray = [testCustomView]()
+    
     // 最初のtitleは、tokyoにした
     var markerTitle = "Tokyo"
     // お店の名前を検索でヒット
@@ -54,13 +59,15 @@ class ViewController: UIViewController {
     var networkLayer = NetworkLayer()
     // お店の名前: [お気に入りリストに入れたか、 リクエストしたか]のDictionary
     var checkStatePlaceDict = [String: [Bool]]()
+    // modelの配列のindexを初期化
+    var modelIndex = 0
     
     // CoreData関連
     // お店のrequest, like list管理
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     // CoreDataのentityの配列
-    var checkStateList = [User_checkStateList]()
-    
+    var checkStateLists = [User_checkStateList]()
+    var selectedCheckList: User_checkStateList?
     
     @IBOutlet weak var cardView: testCustomView! {
         didSet {
@@ -101,9 +108,13 @@ class ViewController: UIViewController {
         dismissKeyboardByTap()
         // ⚠️API modelからconfigureするつもり
 //        cardView.configure(state: requestState)
+        // MARK: APIは最初に読み込む
         requestRestaurantAPI()
+        // imageも最初からするようにした
+        requestGetImage()
         cardViewGesture()
         addKeyboardObserver()
+        fetchCoreData()
     }
     
     // Memory Warning
@@ -144,6 +155,11 @@ class ViewController: UIViewController {
         
     }
     
+    // 検索結果がmodelにないときのevent 処理
+    func noHaveSearchResultEvent() {
+        self.present(setNoResultAlert(), animated: true)
+    }
+    
     // Image写真の処理
     // ⚠️今回は、imageは使わないことにした
     func loadImage(urlString: String, completion: @escaping (UIImage?) -> Void ) {
@@ -155,7 +171,6 @@ class ViewController: UIViewController {
             completion(nil)
         }
     }
-    
     // 最初からserver apiを持ってくるようにすると、問題なしだが、検索するたびにAPIを叩くようにするとエラー生じる
     func requestRestaurantAPI() {
 //        let url = "http://localhost:8080/api/shops"
@@ -166,41 +181,8 @@ class ViewController: UIViewController {
             if let hasData = data {
                 do {
                     self.resultPlaceModel = try JSONDecoder().decode([PlaceModel].self, from: hasData)
-                    
-                    // 検索のtextとAPIのtextが一致しているかを確認して、一致しているときだけ、以下の処理を進める
-                    guard self.searchText == self.resultPlaceModel.first?.name else {
-                        // restauName初期化
-                        print("no searchText exists in server api")
-                        self.noHaveSearchResultEvent()
-                        self.restauName = ""
-                        return
-                    }
-                    
-                    // requestAPIからRestauNameをmatchする (geoCodingを容易にするため)
-                    self.restauName = self.resultPlaceModel.first?.name ?? ""
-                    print("restaurant Name:", self.restauName)
-                    self.getAddressString()
-                    
-                    DispatchQueue.main.async {
-                        // お気に入りリストに入れたか、リクエストしたかは、core Dataに保存しておく
-                        if self.checkStatePlaceDict[self.restauName] != nil {
-                            // すでに検索を行い、bool typeが入っていればdetailVCに引き渡す
-                            // MARK: ⚠️途中の段階
-                            print(self.checkStatePlaceDict[self.restauName]!)
-                            self.requestState = self.checkStatePlaceDict[self.restauName]![0]
-                        } else {
-                            // 初めて検査した場所であれば、Default: false  falseにしておく
-                            self.checkStatePlaceDict[self.restauName] = [false, false]
-                            self.requestState = self.checkStatePlaceDict[self.restauName]![0]
-                        }
-                        
-                        
-                        // CardViewの情報をModelの情報に変更
-                        self.cardView.configure(with: self.resultPlaceModel, request: self.requestState)
-                        self.cardView.hartButton.isEnabled = true
-                        // CardViewのimageもconfigure
-                        self.requestGetImage()
-                    }
+                    // データを受け取った後の同期的な処理を行うところ
+                    print("API Request and configure success!")
                     
                 } catch {
                     print(error)
@@ -209,7 +191,9 @@ class ViewController: UIViewController {
         }
     }
     
+    // ⚠️cardViewの処理よりも、imageの処理が遅くfetchするため、imageを先にloadしてから cardViewを表示するように修正中
     func requestGetImage() {
+        // imageに関しては、ダミーデータを利用
         let imageUrl1 = "http://drive.google.com/uc?export=view&id=1EV5zj7Rz5HG8uUWCvEb8lxehlDPfrACM"
         let imageUrl2 = "http://drive.google.com/uc?export=view&id=1OXit8NrEDtTKea7rxkFN286J7bX20X0K"
         let imageUrl3 = "http://drive.google.com/uc?export=view&id=1q8ORuIudXwedg-DJ8wfHp3fp3yVLUgcF"
@@ -230,29 +214,77 @@ class ViewController: UIViewController {
         self.loadImage(urlString: imageUrl3) { image in
             DispatchQueue.main.async {
                 self.cardView.image3.image = image
+                print("load Image3 finish")
             }
-        }
-    }
-    
-    func getAddressString() {
-        if let hasData = resultPlaceModel.first, searchText == resultPlaceModel.first?.name {
-            targetAddress += hasData.prefecture ?? ""
-            targetAddress += hasData.locality ?? ""
-            targetAddress += hasData.street ?? ""
-            targetAddress += hasData.building ?? ""
-        } else {
-            targetAddress = ""
-            return
         }
     }
     
     // ⚠️search button押したら、nameがmatchするかを確認
     // そのあと、targetAddressでgeocodingして、mapにmarker 表示
     func isMatchedName() -> Bool {
-        if searchText == restauName {
-            return true
-        } else {
-            return false
+        var isMatched = false
+        // APIで読み込んだ全てのデータからsearchTextと一致するお店の名前を探す
+        // 一致するお店の名前があるおであれば、そのまま、cardViewとimageをconfigureする
+        for i in 0..<resultPlaceModel.count {
+            if let hasName = resultPlaceModel[i].name {
+                if self.searchText == hasName {
+                    // modelIndexをiに設定
+                    modelIndex = i
+                    isMatched = true
+                    break
+                }
+            }
+        }
+        
+        if !isMatched {
+            // matchしたmodelがない場合は、indexを0に初期化
+            modelIndex = 0
+        }
+        
+        return isMatched
+    }
+    
+    //textStrには、matchしたお店の名前が入る
+    func matchAPIDataWithView(target textStr: String, index i: Int) {
+        //TODO: 🔥検索したtextとAPI Data内のnameが一致するときだけ、呼び出されるメソッド
+        // requestAPIからRestauNameをmatchする (geoCodingを容易にするため)
+        self.restauName = textStr
+        print("restaurant Name:", self.restauName)
+        // そのお店のアドレスを読み込む
+        self.getAddressString(target: i)
+        
+//        // image 処理とcard処理を同期、非同期処理を組み合わせて行うためのqueue
+//        let mainQueue = DispatchQueue(label: "entireFetch")
+//        let getImageQueue = DispatchQueue(label: "imageFetch")
+        
+        DispatchQueue.main.async {
+            // MARK: ⚠️途中の段階checkStateの持続的な保存について処理
+            // お気に入りリストに入れたか、リクエストしたかは、core Dataに保存しておく
+            if self.checkStatePlaceDict[self.restauName] != nil {
+                // すでに検索を行い、bool typeが入っていればdetailVCに引き渡す
+                // MARK: ⚠️途中の段階
+                print(self.checkStatePlaceDict[self.restauName]!)
+                self.requestState = self.checkStatePlaceDict[self.restauName]![0]
+            } else {
+                // 初めて検査した場所であれば、Default: false  falseにしておく
+                self.checkStatePlaceDict[self.restauName] = [false, false]
+                self.requestState = self.checkStatePlaceDict[self.restauName]![0]
+            }
+            
+            self.cardView.configure(with: self.resultPlaceModel[i], request: self.requestState)
+        }
+    }
+    
+    // 探したモデルとmatchしたときだけ呼び出されるメソッド
+    func getAddressString(target index: Int) {
+        // アドレスは、prefecture, locality, streetまであるかどうかを確認する
+        // streetまでのデータがないとgeoCodingするときに、緯度と経度に基づくmarkerが正常に表示されない
+        if let hasPrefecture = resultPlaceModel[index].prefecture, let hasLocality = resultPlaceModel[index].locality, let hasStreet = resultPlaceModel[index].street {
+            targetAddress += hasPrefecture
+            targetAddress += hasLocality
+            targetAddress += hasStreet
+            // buildingの情報はないかも知れないので、独自な処理を行う
+            targetAddress += resultPlaceModel[index].building ?? ""
         }
     }
     
@@ -315,7 +347,8 @@ class ViewController: UIViewController {
         searchBar.delegate = self
         // cancel Buttonを表す
         // ⚠️ Cancel ボタンのdispalyをもっと自然なアニメーションに変更するつもり
-        searchBar.showsCancelButton = false
+        // animationと一緒に
+        searchBar.setShowsCancelButton(false, animated: true)
 //        searchBar.showsSearchResultsButton = true
     }
     
@@ -351,6 +384,7 @@ class ViewController: UIViewController {
         
         // dataをdetailVCに渡す
         detailVC.seatsModelByPlace = resultPlaceModel
+        detailVC.searchModelIndex = modelIndex
         
         guard let hasRestauName = cardView.restaurantName.text else {
             return
@@ -413,8 +447,13 @@ class ViewController: UIViewController {
         guard appearKeyboard == true else {
             return
         }
-        appearKeyboard = false
         
+        // keyboardがtrueのときの処理
+        if searchBar.showsCancelButton {
+            searchBar.setShowsCancelButton(false, animated: true)
+        }
+        
+        appearKeyboard = false
         print(appearKeyboard)
     }
     
@@ -510,19 +549,16 @@ extension ViewController: UISearchBarDelegate, UISearchResultsUpdating {
         guard let hasText = searchBar.text else {
             return
         }
-        print("search")
+        print("search button clicked!")
         print(searchText)
         
         searchText = hasText
-        
-        // MARK: searchボタンを押すとrestaurantAPIをrequestを叩く
-        // ⚠️ requestは、main threadでasyncで動く
-        requestRestaurantAPI()
         // search ボタンを押すと、常にkeyboardが表示されないように
         searchBar.endEditing(true)
         
         if isMatchedName() {
-            print(checkStateList)
+            matchAPIDataWithView(target: searchText, index: modelIndex)
+            print(checkStateLists)
             // markerを追加してから、変更する方法
             // nil してからまた、入れる
             if marker.map != nil {
@@ -537,20 +573,42 @@ extension ViewController: UISearchBarDelegate, UISearchResultsUpdating {
         } else {
             // ⚠️nameがmatchしても一回の検索でエラーが表示される問題があった
             // ⚠️ここの検索で一回止まった
-            print("no exist search by search button click")
+            print("no exist search result by search button click")
+            // お店の名前と住所を初期化する
+            self.restauName = ""
+            self.targetAddress = ""
             noHaveSearchResultEvent()
         }
     }
     
     func updateSearchResults(for searchController: UISearchController) {
+        // 今回は、searchControllerで実装してないため、呼び出されないメソッドであることがわかった
         guard let hasText = searchController.searchBar.text else {
             return
         }
         print("update:", hasText)
     }
     
-    // 最初のmarker設定
+    // TODO: ⚠️途中の段階
+    // requestや、likeした複数の場所を最初に全部marker設定
     func setInitMarker() {
+        if self.checkStateLists.count == 0 {
+            return
+        }
+        
+        for i in 0..<checkStateLists.count {
+            if let hasAddress = checkStateLists[i].address {
+                
+                
+                
+                
+            }
+            
+            
+        }
+        
+        
+        
         let locate = CLLocationCoordinate2D(latitude: defaultPositionLat, longitude: defaultPositionLng)
         marker.position = locate
         marker.title = markerTitle
@@ -563,11 +621,18 @@ extension ViewController: UISearchBarDelegate, UISearchResultsUpdating {
         }
     }
     
+    // requestやlikeをしたお店へmarkerを持続的に維持する　もしくは、追加する
+    func addAndPreserveMerker() {
+        
+    }
+    
 
     // search bar touch後、入力を始めたときに呼び出されるメソッド
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         if !searchBar.showsCancelButton {
-            searchBar.showsCancelButton = true
+            // cancel buttonが表示されていない
+            // cancel buttonの表示をanimation効果とともに表す
+            searchBar.setShowsCancelButton(true, animated: true)
         }
         
         print("search Start!")
@@ -576,7 +641,8 @@ extension ViewController: UISearchBarDelegate, UISearchResultsUpdating {
     // cancel button click時に呼び出されるメソッド
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         if searchBar.showsCancelButton {
-            searchBar.showsCancelButton = false
+            // cancel buttonが表示されている
+            searchBar.setShowsCancelButton(false, animated: true)
         }
         
         searchBar.endEditing(true)
@@ -592,6 +658,7 @@ extension ViewController: UISearchBarDelegate, UISearchResultsUpdating {
     }
     
     func requestApplyTap() {
+        cardView.requestButtonState = .requested
         cardView.requestButton.setTitle("リクエスト申請中", for: .normal)
         cardView.requestButton.setTitleColor(.white, for: .normal)
         // backGroundの反映はうまくできた
@@ -636,14 +703,19 @@ extension ViewController: cardViewDelegate {
     func requestButtonEvent() {
         // buttonをクリックすると、リクエスト済みという文字に変更する必要がある
         // buttonクリックしたから、disabledに変える
+        // MARK: ⚠️途中の段階, コードリファクタリング
+        print("requestState: ", requestState)
         
-        if !requestState {
+        if cardView.requestButtonState == .normal {
             // requestがまだの状態 (falseの場合)
+            print("normal -> request: ", cardView.requestButtonState)
             requestApplyTap()
         } else {
             // requestをした場合 (申請中)
+            print("request -> normal ", cardView.requestButtonState)
             requestCancelTap()
         }
+        saveCoreData(checkName: restauName)
     }
     
     func hartButtonEvent() {
@@ -666,12 +738,9 @@ extension ViewController: cardViewDelegate {
             cardView.hartButton.layer.add(cardView.bounceAnimation, forKey: nil)
             print("selected -> normal")
         }
+        
+        saveCoreData(checkName: restauName)
     }
-    
-    func noHaveSearchResultEvent() {
-        self.present(setNoResultAlert(), animated: true)
-    }
-    
 }
 
 // MARK: Alert 関連
@@ -711,6 +780,7 @@ extension ViewController {
        
         // request状態をまた、trueに
         requestState = false
+        cardView.requestButtonState = .normal
         
         // vacancy stateのtext
         cardView.vacancyState.text = "カメラを設置していません"
@@ -736,11 +806,11 @@ extension ViewController {
         
         return alert
     }
-    
-    
 }
 
 // MARK: CoreData関連
+// ⚠️まだ、途中の段階
+// save, update, delete に関する処理が入る予定
 extension ViewController {
     // local storageに保存されたものをfetchする間数
     func fetchCoreData() {
@@ -750,13 +820,16 @@ extension ViewController {
         let context = appDelegate.persistentContainer.viewContext
         
         do {
-            self.checkStateList = try context.fetch(fetchRequest)
+            self.checkStateLists = try context.fetch(fetchRequest)
         } catch {
             print(error)
         }
     }
     
     // 検索を通して、一回見てみたことのあるお店であれば、その時点でcore Dataのオブジェクトを生成するようにした
+    // targetAddressまで全部駆け込んだ後
+    // TODO: 🔥request または、 like buttonをclickしてからcoreDataに保存するようにしたい
+    // save したなら、true   してないなら、false
     func saveCoreData(checkName restauName: String) {
         let context = appDelegate.persistentContainer.viewContext
         guard let entityDescription = NSEntityDescription.entity(forEntityName: "User_checkStateList", in: context) else {
@@ -768,31 +841,110 @@ extension ViewController {
         }
         
         // ⚠️それぞれuuidが異なる -> 今後、firebase の authenticationを導入する予定
+        // uuidは、データが生成されるたびにuniqueな値が入るようになる
         object.uuid = UUID()
         object.restaurantName = restauName
+        object.address = targetAddress
         
-        
-        
-        
-        for i in 0..<checkStateList.count {
-            if checkStateList[i].restaurantName == restauName {
-                // 同じ名前のrestaurantをすでに格納したのであれば、return
-                return
-            }
+        if cardView.requestButtonState == .normal {
+            object.request = false
+        } else {
+            object.request = true
         }
         
-        let index = checkStateList.count
-        checkStateList[index].restaurantName = restauName
+        if cardView.hartButtonState == .normal {
+            object.like = false
+        } else {
+            object.like = true
+        }
+        
+        if !object.like && !object.request {
+            // 両方ともfalseだったら、coreDataに保存しない
+            return
+        } else {
+            
+            appDelegate.saveContext()
+            // TODO: ⚠️markerの持続的な保存
+        }
+        
+        
+        
+        
+//        for i in 0..<checkStateLists.count {
+//            if checkStateLists[i].restaurantName == restauName {
+//                // 同じ名前のrestaurantをすでに格納したのであれば、return
+//                return
+//            }
+//        }
+//
+//        let index = checkStateLists.count
+//        checkStateLists[index].restaurantName = restauName
     }
     
-    func updateCoreData(checkName restauName: String) {
+    // 該当のmarkerをclickし、そのCoreDataをアップデートする
+    func updateCoreData(checkName restauName: String, index i: Int) {
+        guard let hasData = selectedCheckList else {
+            return
+        }
         
+        guard let hasRestauName = hasData.restaurantName else {
+            return
+        }
+        
+        let context = appDelegate.persistentContainer.viewContext
+        let fetchRequest: NSFetchRequest<User_checkStateList> = User_checkStateList.fetchRequest()
+        
+        // selectしたものだけ読み込む (restaurantの名前を持ってくる)
+        fetchRequest.predicate = NSPredicate(format: "restaurantName = %@", hasRestauName)
+        
+        do {
+            // 選択して読み込んだデータ
+            // 変更される値のみ、変えてやればいい
+            let loadedData = try context.fetch(fetchRequest)
+            var hasRequest = loadedData.first?.request
+            var hasLike = loadedData.first?.like
+            
+            if cardView.requestButtonState == .normal {
+                hasRequest = false
+            } else {
+                hasRequest = true
+            }
+            
+            if cardView.hartButtonState == .normal {
+                hasLike = false
+            } else {
+                hasLike = true
+            }
+            
+            // TODO: ⚠️両方ともfalseだったら coreDataから削除
+            // contextをdelete -> context をsave
+            if !(hasLike!) && !(hasRequest!) {
+                let objectToDelete = loadedData.first!
+                context.delete(objectToDelete)
+                do {
+                    try context.save()
+                } catch {
+                    print(error)
+                }
+                
+            } else {
+                appDelegate.saveContext()
+            }
+            
+        } catch {
+            print(error)
+        }
     }
+    
 }
 
 
 
 
+
+
+
+// CLUSTER 関連のメソッド
 //        clusterConfig()
 //        clusterManager.setDelegate(self, mapDelegate: self)
     

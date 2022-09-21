@@ -14,11 +14,15 @@ enum isSelected {
     case normal
 }
 
+enum isRequested {
+    case requested
+    case normal
+}
+
 
 protocol cardViewDelegate {
     func requestButtonEvent()
     func hartButtonEvent()
-    func noHaveSearchResultEvent()
 }
 
 // default値を設定しないと、label label label...などが表示される
@@ -51,8 +55,8 @@ class testCustomView: UIView {
     }
     @IBOutlet weak var hartButton: UIButton! {
         didSet {
-            // APIとヒットしてから enabledをtrueに
-            hartButton.isEnabled = false
+//            // APIとヒットしてから enabledをtrueに
+//            hartButton.isEnabled = false
             hartButton.setTitle("", for: .normal)
             setHartButton()
         }
@@ -87,6 +91,8 @@ class testCustomView: UIView {
     public var delegate: cardViewDelegate?
     
     public var hartButtonState: isSelected = .normal
+    public var requestButtonState: isRequested = .normal
+    
     public var bounceAnimation: CAKeyframeAnimation = {
         let bounceAnimation = CAKeyframeAnimation(keyPath: "transform.scale")
         bounceAnimation.values = [1.0, 1.5, 0.9, 1.02, 1.0]
@@ -141,49 +147,37 @@ class testCustomView: UIView {
         hartButton.tintColor = .systemRed
     }
     
-    public func configure(with model: [PlaceModel], request requestState: Bool) {
-        // model の情報がなかったら
-        if model.isEmpty {
-            // 見つかりませんでした！というalertを表示させたい！
-            // ⚠️ちょっと自信ないコード
-            self.delegate?.noHaveSearchResultEvent()
-            
-            restaurantName.text = "検索結果なし"
-            openTime.text = "検索結果なし"
-            closeTime.text = "検索結果なし"
-            vacancyState.text = "検索結果なし"
-            vacancyState.textColor = .lightGray
-            vacancyState.font = UIFont.systemFont(ofSize: 15, weight: .medium)
-            requestButton.setTitle("検索結果なし", for: .normal)
-            requestButton.backgroundColor = .lightGray
-        } else {
-            let vacantSeatsArray = model.first?.seats
-            // 空きありがdefaultの状態
-            var noVacancy = false
-            restaurantName.text = model.first?.name ?? ""
-            openTime.text = "Open: 10:00AM"
-            closeTime.text = "Close: 20:00PM"
-            
-            if requestState {
-                // requestされたのであれば、
-                for i in 0..<(vacantSeatsArray?.count ?? 0)  {
-                    if let hasVacant = vacantSeatsArray?[i].isUsed {
-                        vacancyState.text = "満席"
-                        vacancyState.textColor = .red.withAlphaComponent(0.7)
-                        noVacancy = hasVacant
-                        break
-                    }
+    // modelを全部持ってくるのではなく、検索と一致するmodelのみを持ってくるように変換
+    // つまり、このconfigureは、modelがあるときだけ、呼び出される予定
+    public func configure(with model: PlaceModel, request requestState: Bool) {
+        // model の情報がなかったらそもそも、このメソッドに入らない設定にした
+        // これは、Google Place APIと連動すればいいかも
+        let vacantSeatsArray = model.seats
+        // 空きありがdefaultの状態
+        var noVacancy = false
+        restaurantName.text = model.name ?? ""
+        openTime.text = "Open: 10:00AM"
+        closeTime.text = "Close: 20:00PM"
+        
+        if requestState {
+            // requestされたのであれば、
+            for i in 0..<(vacantSeatsArray.count) {
+                if let hasVacant = vacantSeatsArray[i].isUsed {
+                    vacancyState.text = "満席"
+                    vacancyState.textColor = .red.withAlphaComponent(0.7)
+                    noVacancy = hasVacant
+                    break
                 }
-                
-                if !noVacancy {
-                    vacancyState.text = "空席あり"
-                    vacancyState.textColor = UIColor(rgb: 0x06B32A)
-                }
-            } else {
-                // requestされてないところであれば
-                vacancyState.text = "カメラを設置していません"
-                vacancyState.textColor = .black
             }
+            
+            if !noVacancy {
+                vacancyState.text = "空席あり"
+                vacancyState.textColor = UIColor(rgb: 0x06B32A)
+            }
+        } else {
+            // requestされてないところであれば
+            vacancyState.text = "カメラを設置していません"
+            vacancyState.textColor = .black
         }
     }
     
@@ -195,9 +189,6 @@ class testCustomView: UIView {
     @IBAction func hearButtonTapped(_ sender: Any) {
         self.delegate?.hartButtonEvent()
     }
-    
-    
-
 }
 
 // UIColorをhexタイプで設定できるように
@@ -225,3 +216,15 @@ extension UIColor {
         )
     }
 }
+
+//if model.isEmpty {
+//    // 見つかりませんでした！というalertを表示させたい！
+//
+//    restaurantName.text = "検索結果なし"
+//    openTime.text = "検索結果なし"
+//    closeTime.text = "検索結果なし"
+//    vacancyState.text = "検索結果なし"
+//    vacancyState.textColor = .lightGray
+//    vacancyState.font = UIFont.systemFont(ofSize: 15, weight: .medium)
+//    requestButton.setTitle("検索結果なし", for: .normal)
+//    requestButton.backgroundColor = .lightGray
