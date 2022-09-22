@@ -33,6 +33,9 @@ class DetailCardVC: UIViewController {
     var image2 = UIImage()
     var image3 = UIImage()
     
+    // requestボタンの状態
+    var requestState: isRequested = .normal
+    
     // seats Model
     var seatsModelByPlace: [PlaceModel] = [PlaceModel]()
     // seats Model Index
@@ -113,6 +116,8 @@ class DetailCardVC: UIViewController {
         
         self.view.addSubview(seatTableView)
         self.restaurantDetailView.delegate = self
+        fetchRequestState()
+        
         seatTableView.isScrollEnabled = false
         setTableViewConstraints()
         seatTableView.delegate = self
@@ -273,6 +278,35 @@ class DetailCardVC: UIViewController {
                 print(requestState)
             }
         }
+    }
+    
+    // requestの状態に合わせて、cardViewのconfigureを行う
+    func fetchRequestState() {
+        if requestState == .normal {
+            isNotRequestApplied()
+        } else {
+            isRequestApplied()
+        }
+    }
+    
+    func isRequestApplied() {
+        restaurantDetailView.requestButton.setTitle("リクエスト申請中", for: .normal)
+        restaurantDetailView.requestButton.setTitleColor(.white, for: .normal)
+        // backGroundの反映はうまくできた
+        restaurantDetailView.requestButton.backgroundColor = UIColor(rgb: 0xA9A9A9)
+//        cardView.requestButton.isEnabled = false
+        
+        restaurantDetailView.vacancyState.text = "リクエスト承諾をお待ちください"
+        restaurantDetailView.vacancyState.textColor = UIColor(rgb: 0x0000CD)
+    }
+    
+    func isNotRequestApplied() {
+        restaurantDetailView.requestButton.setTitle("¥ 設置リクエスト", for: .normal)
+        restaurantDetailView.requestButton.setTitleColor(.black, for: .normal)
+        restaurantDetailView.requestButton.backgroundColor = UIColor(rgb: 0xFFBC42)
+        
+        restaurantDetailView.vacancyState.text = "カメラを設置していません"
+        restaurantDetailView.vacancyState.textColor = .black
     }
     
     @IBAction func dismissClicked(_ sender: Any) {
