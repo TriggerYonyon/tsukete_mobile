@@ -22,6 +22,9 @@ import CoreData
 // 3-(2). リクエストをしたお店であれば、markerが表示されるように,  likeボタンを押したお店であれば markerはlike buttonのイメージ
 // 4. アプリを再起動しても、coreDataが保存されているかを確認
 
+// TODO: 修正するところ: CoreDataにデータを保存することまではできるが、cardViewのconfigureをいちいち行わないといけない
+// cardView自体を保存する方法を探してる (CustomViewの配列などを設けて)
+
 
 class ViewController: UIViewController {
 //
@@ -158,6 +161,41 @@ class ViewController: UIViewController {
     // 検索結果がmodelにないときのevent 処理
     func noHaveSearchResultEvent() {
         self.present(setNoResultAlert(), animated: true)
+    }
+    
+    // getLocationとは、違いmarkerを全部設定して、cameraのmovingはしないように
+    private func setInitLocations(targetAddress address: String, targetName name: String) {
+        var setPositionLat = CLLocationDegrees()
+        var setPositionLng = CLLocationDegrees()
+        
+        geocoder.geocodeAddressString(address) { (placemarks, error) in
+            if let hasPlace = placemarks {
+                print("placemarks.count: \(hasPlace.count)")
+                for place in hasPlace {
+                    if let location = place.location {
+                        print("latitude: \(location.coordinate.latitude)")
+                        print("longitude: \(location.coordinate.longitude)")
+                        setPositionLat = location.coordinate.latitude
+                        setPositionLng = location.coordinate.longitude
+                    }
+                }
+            }
+            
+            self.setInitMarkers(savedLocate: CLLocationCoordinate2D(latitude: setPositionLat, longitude: setPositionLng), restauName: name, address: address)
+            
+        }
+    }
+    
+    // 最初のAPP起動時に、CoreDataに格納されたデータから複数のmarkerを立てる
+    private func setInitMarkers(savedLocate locate: CLLocationCoordinate2D, restauName name: String, address addr: String) {
+        let setMarker = GMSMarker()
+        setMarker.position = CLLocationCoordinate2D(latitude: locate.latitude, longitude: locate.longitude)
+        setMarker.title = restauName
+        setMarker.snippet = addr
+        
+        DispatchQueue.main.async {
+            setMarker.map = self.mapView
+        }
     }
     
     // Image写真の処理
@@ -401,6 +439,11 @@ class ViewController: UIViewController {
         }
         
         detailVC.restaurantTitle = cardView.restaurantName.text!
+        // mainVCのrequestStateをdetailVCも同期化する
+        detailVC.requestState = cardView.requestButtonState
+        
+        //⚠️ mainVCのhart ButtonをdetailVCも同期化する
+        
         
         // MARK: お気に入りボタンとリクエストボタンのstateを引き渡す
         detailVC.checkStatePlaceDict[hasRestauName] = self.checkStatePlaceDict[hasRestauName]
@@ -469,24 +512,7 @@ class ViewController: UIViewController {
             self.marker.appearAnimation = .pop
         }
     }
-    
-//    private func setRequestButtonState() {
-//        if restauName != "" {
-//            if let hasDict = checkStatePlaceDict[self.restauName] {
-//                cardView.translatesAutoresizingMaskIntoConstraints  = false
-//
-//                if hasDict[1] {
-//                    // すでにrequestされたものであれば
-//                    // heightを0にしてから、topAnchorを調整 -> 無駄なspaceを減らす
-//                    cardView.requestButton.heightAnchor.constraint(equalToConstant: 0).isActive = true
-//                    cardView.requestButton.topAnchor.constraint(equalTo: cardView.vacancyState.bottomAnchor, constant: 0).isActive = true
-//                } else {
-//                    // まだ、requestされていない場合の処理
-//                }
-//            }
-//        }
-//    }
-    
+        
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -591,15 +617,18 @@ extension ViewController: UISearchBarDelegate, UISearchResultsUpdating {
     
     // TODO: ⚠️途中の段階
     // requestや、likeした複数の場所を最初に全部marker設定
-    func setInitMarker() {
-        if self.checkStateLists.count == 0 {
+    func setMatchMarkers() {
+        // なにも入ってないなら、return
+        if self.checkStateLists.isEmpty {
             return
         }
         
         for i in 0..<checkStateLists.count {
+            //住所があるデータだけmarkerを設定するように
             if let hasAddress = checkStateLists[i].address {
+                let restauName = checkStateLists[i].restaurantName!
                 
-                
+                setInitLocations(targetAddress: hasAddress, targetName: restauName)
                 
                 
             }
@@ -866,19 +895,6 @@ extension ViewController {
             appDelegate.saveContext()
             // TODO: ⚠️markerの持続的な保存
         }
-        
-        
-        
-        
-//        for i in 0..<checkStateLists.count {
-//            if checkStateLists[i].restaurantName == restauName {
-//                // 同じ名前のrestaurantをすでに格納したのであれば、return
-//                return
-//            }
-//        }
-//
-//        let index = checkStateLists.count
-//        checkStateLists[index].restaurantName = restauName
     }
     
     // 該当のmarkerをclickし、そのCoreDataをアップデートする
